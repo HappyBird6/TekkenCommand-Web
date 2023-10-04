@@ -55,43 +55,56 @@ html {
     margin: 0;
     padding: 0;
     background-color: gray;
-    
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     position: relative;
     overflow: hidden;
 }
 
 .characterSearch {
-    width: 98%;
     height: 50px;
     display: flex;
-    top: 10px;
     
 }
 .characterSearch input {
     width : 100%;
 }
-  
-.characterSearch button {
-    flex-shrink: 0;
+.searchBox {
+    width: 95%;
+    margin-left: 2.5%;
+    display: flex;
+}
+.commandSearch {
+    height: 50px;
+    display: flex;
+    width: 70%;
+}
+.commandSearch input {
+    width : 100%;
+}
+.commandCondition{
+    width: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .characterContainer {
-    height: 94%;
+    height: 90%;
     width: 100%;
     display: flex;
     position: relative;
     justify-content: center;
-    overflow : auto;
-    
+    /* overflow : auto; */
+    overflow-y: scroll;
+    -ms-overflow-style: none; /* 인터넷 익스플로러 */
+    scrollbar-width: none; /* 파이어폭스 */
+}
+.characterContainer::-webkit-scrollbar{
+    display: none;
 }
 .commandFrame {
     width: 79%;
     height: 100%;
-    margin: 1px;
     background-color: rgb(143, 143, 143);
-    overflow : auto;
+    overflow: hidden;
 }
 .skillBox {
     width: 90%;
@@ -112,6 +125,28 @@ html {
     align-items: flex-start;
     align-items: center;
 }
+.commandList {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    height: 90%;
+    display: flex;
+    position: relative;
+    justify-content: center;
+    /* overflow: auto; */
+    overflow-y: scroll;
+}
+.commandList::-webkit-scrollbar{
+    width: 10px;
+}
+.commandList::-webkit-scrollbar-thumb{
+    height : 10%;
+    background : red;
+
+    border-radius: 10px;
+}
+.commandList::-webkit-scrollbar-track{
+    background :rgb(143, 143, 143);
+}
 .characterBox {
     width : 100%;
     height : flex;
@@ -123,4 +158,34 @@ html {
     height: 500px;
     background-color: #b8b8b8;
 }
+
+.command_table td {
+    border : 1px black solid;
+}
+
+.command_table{
+    margin: 5px;
+    border-collapse: collapse;
+    border : 2px black solid;
+    width : 100%;
+}
+.command_num{
+    width :10%;
+}
+.command_name{
+    width :70%;
+}
+.command{
+    width :50%
+}
+.favorite_check_star_td{
+    text-align: right;
+}
+.favorite_check_box:hover .favorite_check_star{
+    visibility: hidden;
+}
+.favorite_check_box:hover .favorite_check_star_filled{
+    visibility: hidden;
+}
+
 

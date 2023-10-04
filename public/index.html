@@ -14,6 +14,7 @@
     </div>
     <div class="help">
       <p>도움말</p>
+      <div id="commandIMG"></div>
     </div>
     <div class="setting">
       <p>로그인</p>
@@ -25,14 +26,17 @@
       <div class="characterSearch">
         <input type="text" id="characterInput" placeholder="캐릭터 검색" oninput="searchCharacterInList()"
           onkeydown="handleSearch(event)">
-        <!-- <button onclick="searchCharacter()">검색</button> -->
       </div>
       <div class="characterContainer"></div>
     </div>
     <div class="commandFrame">
       <div class="searchBox">
-        <input type="text" id="searchInput" placeholder="Command를 검색" oninput="searchCommands()">
-        <!-- <button onclick="searchCommands()">검색</button> -->
+        <div class="commandSearch">
+          <input type="text" id="searchInput" placeholder="Command를 검색" oninput="searchCommands()">
+        </div>
+        <div class="commandCondition">
+          commandCondition
+        </div>
       </div>
       <div class="commandList"></div>
     </div>
@@ -40,7 +44,7 @@
       <p>기타</p>
     </div>
   </div>
-  
+
   <script>
     let commandData; // 전체 커맨드 목록을 저장할 변수
     let characterListData;
@@ -69,11 +73,20 @@
           console.error('캐릭터 리스트 호출 중 오류가 발생했습니다.', error);
         })
     }
+
+    // Enter시 바로 검색
+    function handleSearch(event) {
+      if (event.key === 'Enter') {
+        event.preventDefault(); // 기본 엔터 동작 막기
+        searchCharacter();
+      }
+    }
     function searchCharacter() {
       const characterInput = document.getElementById('characterInput');
       const character = characterInput.value;
       fetchCharacterData(character);
     }
+
     function searchCharacterInList() {
       const input = document.getElementById('characterInput');
       const searchValue = input.value.toLowerCase();
@@ -106,6 +119,7 @@
         displayAllCharacters();
       }
     }
+
     function searchCommands() {
       const input = document.getElementById('searchInput');
       const searchValue = input.value.toLowerCase().split(' ').join('');
@@ -129,7 +143,7 @@
             skillBox.appendChild(name);
 
             const info_command = document.createElement('p');
-            info_command.textContent += `Command : ${command.command}`;
+            info_command.innerHTML += `Command : ` + commandToImg(command.command);
             const info_frame = document.createElement('p');
             info_frame.textContent += `Frame : ${command.frame}`;
             skillBox.appendChild(info_command);
@@ -151,28 +165,75 @@
       const flexContainer = document.createElement('div');
       flexContainer.classList.add('flexContainer');
 
+      // for (const skill in commandData.skill) {
+      //   const command = commandData.skill[skill];
+
+      //   const skillBox = document.createElement('div');
+      //   skillBox.classList.add('skillBox');
+
+      //   const name = document.createElement('p');
+      //   name.textContent = command.name_en;
+      //   skillBox.appendChild(name);
+
+      //   const info_command = document.createElement('p');
+      //   info_command.innerHTML += `Command : `+commandToImg(command.command);
+      //   const info_frame = document.createElement('p');
+      //   info_frame.textContent += `Frame : ${command.frame}`;
+      //   skillBox.appendChild(info_command);
+      //   skillBox.appendChild(info_frame);
+
+      //   flexContainer.appendChild(skillBox);
+      // }
       for (const skill in commandData.skill) {
         const command = commandData.skill[skill];
 
-        const skillBox = document.createElement('div');
-        skillBox.classList.add('skillBox');
-
-        const name = document.createElement('p');
-        name.textContent = command.name_en;
-        skillBox.appendChild(name);
-
-        const info_command = document.createElement('p');
-        info_command.textContent += `Command : ${command.command}`;
-        const info_frame = document.createElement('p');
-        info_frame.textContent += `Frame : ${command.frame}`;
-        skillBox.appendChild(info_command);
-        skillBox.appendChild(info_frame);
-
-        flexContainer.appendChild(skillBox);
+        const command_table = document.createElement('table');
+        command_table.classList.add('command_table');
+        command_table.innerHTML =
+          `
+        <tr>
+          <td class="command_num">${command.number}</td>
+            <td colspan="2" class="command_name">${command.name_en}</td>
+            <td colspan="2" class="favorite_check_star_td">
+                <div class="favorite_check_box">
+                    <img src="./assets/img/star/star-line.png" class="favorite_check_star">
+                    <img src="./assets/img/star/star-fill.png" class="favorite_check_star_filled">
+                </div>
+            </td>  
+        </tr>
+        <tr>
+            <td rowspan="3">공백</td>
+            <td rowspan="3" class="command">${commandToImg(command.command)}</td>
+            <td rowspan="3">스크류</td>
+            <td>데미지</td>
+            <td>${command.damage}</td>
+        </tr>
+        <tr>
+            <td>시작f</td>
+            <td>${command.frame}</td>
+        </tr>
+        <tr>
+            <td>방어f</td>
+            <td>${command.blockedFrame}</td>
+        </tr>
+        <tr>
+            <td>Stance</td>
+            <td rowspan="2">${command.hitPosition}</td>
+            <td rowspan="2">2</td>
+            <td>히트f</td>
+            <td>${command.hitFrame}</td>
+        </tr>
+        <tr>
+            <td>${command.stance}</td>
+            <td>카운터f</td>
+            <td>${command.counterHitFrame}</td>
+        </tr>
+        `
+        flexContainer.appendChild(command_table);
       }
-
       commandList.appendChild(flexContainer);
     }
+
     function displayAllCharacters() {
       const characterConatainer = document.querySelector('.characterContainer');
       characterConatainer.innerHTML = '';
@@ -195,12 +256,55 @@
       }
       characterConatainer.appendChild(flexContainer);
     }
-    function handleSearch(event) {
-      if (event.key === 'Enter') {
-        event.preventDefault(); // 기본 엔터 동작 막기
-        searchCharacter();
+
+    function commandToImg(cmd) {
+      cmd += ' ';
+      let imgHTML = "";
+      let button = '';
+      let index = 0;
+      while (index < cmd.length) {
+        if (cmd[index] == '.') {
+          // 방향키
+          button = '.';
+          let dirc = cmd[index + 1];
+          let isHold = cmd[index + 2] == '+' ? true : false;
+          if (isHold) {
+            imgHTML += `<img src='./assets/img/direction_hold/${dirc}.svg' width=30>`
+            index += 3;
+            continue;
+          } else {
+            imgHTML += `<img src='./assets/img/direction/${dirc}.svg' width=30>`
+            index += 2;
+            continue;
+          }
+        } else if (cmd[index] == 'N') {
+          // 중립
+          imgHTML += "<img src='./assets/img/direction/n.svg' width=40>";
+          index++;
+          continue;
+        } else if (!isNaN(cmd[index]) && cmd[index] != ' ') {
+          // 숫자. 버튼
+          let button = '';
+          for (let j = index; j < cmd.length; j++) {
+            if (isNaN(cmd[j]) || cmd[j] == ' ') {
+              break;
+            }
+            button += cmd[j];
+          }
+          imgHTML += `<img src='./assets/img/button/${button}.svg' width=30>`
+          index += button.length;
+        } else if (cmd[index] == ' ') {
+          imgHTML += '&nbsp;'
+          index++;
+        } else {
+          imgHTML += cmd[index];
+          index++;
+        }
       }
+      return imgHTML;
     }
+
+    // 페이지 시작시 리스트 불러옴
     fetchCharacterList();
   </script>
 </body>
