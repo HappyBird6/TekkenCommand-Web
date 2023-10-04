@@ -45,7 +45,7 @@
     let commandData; // 전체 커맨드 목록을 저장할 변수
     let characterListData;
     function fetchCharacterData(character) {
-      fetch(`https://port-0-tekken-api-kvmh2mljs26e4k.sel4.cloudtype.app/tekkenAPI/7/${character}`)
+      fetch(`https://port-0-tekken-api-kvmh2mljs26e4k.sel4.cloudtype.app/tekkenAPI/command/7/${character}`)
         .then(response => response.json())
         .then(data => {
           // 전체 커맨드 목록 업데이트
@@ -58,7 +58,7 @@
         });
     }
     function fetchCharacterList() {
-      fetch(`https://port-0-tekken-api-kvmh2mljs26e4k.sel4.cloudtype.app/tekkenAPI/7/list`)
+      fetch(`https://port-0-tekken-api-kvmh2mljs26e4k.sel4.cloudtype.app/tekkenAPI/command/7/list`)
         .then(response => response.json())
         .then(data => {
           characterListData = data;
