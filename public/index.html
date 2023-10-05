@@ -1,312 +1,61 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-  <title>TekkenCommand</title>
-  <link rel="stylesheet" href="/styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TekkenCommand</title>
+    <link rel="stylesheet" href="./assets/css/styles.css">
+    <link rel="stylesheet" href="./assets/css/character_box.css">
+    <link rel="stylesheet" href="./assets/css/color.css">
+    <link rel="stylesheet" href="./assets/css/command_table.css">
+    <script src="./assets/js/sc_character.js"></script>
+    <script src="./assets/js/sc_command.js"></script>
+    <script src="./assets/js/sc_fetching.js"></script>
+    <script>
+        fetchCharacterData();
+    </script>
 </head>
 
 <body>
-  <div class="topFrame">
-    <div class="info">
-      <p>Tekken7 Command Dictionary</p>
-      <p>Version : Tekken 7 v5.01</p>
-    </div>
-    <div class="help">
-      <p>도움말</p>
-      <div id="commandIMG"></div>
-    </div>
-    <div class="setting">
-      <p>로그인</p>
-      <p>설정</p>
-    </div>
-  </div>
-  <div class="bottomFrame">
-    <div class="bottomLeftFrame">
-      <div class="characterSearch">
-        <input type="text" id="characterInput" placeholder="캐릭터 검색" oninput="searchCharacterInList()"
-          onkeydown="handleSearch(event)">
-      </div>
-      <div class="characterContainer"></div>
-    </div>
-    <div class="commandFrame">
-      <div class="searchBox">
-        <div class="commandSearch">
-          <input type="text" id="searchInput" placeholder="Command를 검색" oninput="searchCommands()">
+    <div class="topFrame">
+        <div class="info">
+            <p>Tekken7 Command Dictionary</p>
+            <p>Version : Tekken 7 v5.01</p>
         </div>
-        <div class="commandCondition">
-          commandCondition
+        <div class="help">
+            <p>도움말</p>
+            <div id="commandIMG"></div>
         </div>
-      </div>
-      <div class="commandList"></div>
+        <div class="setting">
+            <p>로그인</p>
+            <p>설정</p>
+        </div>
     </div>
-    <div class="advertisement">
-      <p>기타</p>
-    </div>
-  </div>
-
-  <script>
-    let commandData; // 전체 커맨드 목록을 저장할 변수
-    let characterListData;
-    function fetchCharacterData(character) {
-      fetch(`https://port-0-tekken-api-kvmh2mljs26e4k.sel4.cloudtype.app/tekkenAPI/command/7/${character}`)
-        .then(response => response.json())
-        .then(data => {
-          // 전체 커맨드 목록 업데이트
-          commandData = data;
-          console.log(commandData);
-          displayAllCommands();
-        })
-        .catch(error => {
-          console.error('API 호출 중 오류가 발생했습니다.', error);
-        });
-    }
-    function fetchCharacterList() {
-      fetch(`https://port-0-tekken-api-kvmh2mljs26e4k.sel4.cloudtype.app/tekkenAPI/command/7/list`)
-        .then(response => response.json())
-        .then(data => {
-          characterListData = data;
-          console.log(characterListData.name);
-          displayAllCharacters();
-        })
-        .catch(error => {
-          console.error('캐릭터 리스트 호출 중 오류가 발생했습니다.', error);
-        })
-    }
-
-    // Enter시 바로 검색
-    function handleSearch(event) {
-      if (event.key === 'Enter') {
-        event.preventDefault(); // 기본 엔터 동작 막기
-        searchCharacter();
-      }
-    }
-    function searchCharacter() {
-      const characterInput = document.getElementById('characterInput');
-      const character = characterInput.value;
-      fetchCharacterData(character);
-    }
-
-    function searchCharacterInList() {
-      const input = document.getElementById('characterInput');
-      const searchValue = input.value.toLowerCase();
-      const characterContainer = document.querySelector('.characterContainer');
-
-      const flexContainer = document.createElement('div');
-      flexContainer.classList.add('flexContainer');
-
-      characterContainer.innerHTML = '';
-
-      if (searchValue) {
-        for (const name in characterListData.name) {
-          if (name.toLowerCase().startsWith(searchValue)) {
-            const characterBox = document.createElement('div');
-            characterBox.classList.add('characterBox');
-
-            const info = document.createElement('p');
-            info.textContent = name;
-
-            characterBox.appendChild(info);
-            characterBox.addEventListener('click', function () {
-              fetchCharacterData(name);
-            });
-
-            flexContainer.appendChild(characterBox);
-          }
-          characterContainer.appendChild(flexContainer);
-        }
-      } else {
-        displayAllCharacters();
-      }
-    }
-
-    function searchCommands() {
-      const input = document.getElementById('searchInput');
-      const searchValue = input.value.toLowerCase().split(' ').join('');
-      const commandList = document.querySelector('.commandList');
-
-      const flexContainer = document.createElement('div');
-      flexContainer.classList.add('flexContainer');
-      // 기존에 표시된 기술 정보 초기화
-      commandList.innerHTML = '';
-
-      if (searchValue) {
-        for (const skill in commandData.skill) {
-          if (skill.toLowerCase().includes(searchValue)) {
-            const command = commandData.skill[skill];
-
-            const skillBox = document.createElement('div');
-            skillBox.classList.add('skillBox');
-
-            const name = document.createElement('p');
-            name.textContent = command.name_en;
-            skillBox.appendChild(name);
-
-            const info_command = document.createElement('p');
-            info_command.innerHTML += `Command : ` + commandToImg(command.command);
-            const info_frame = document.createElement('p');
-            info_frame.textContent += `Frame : ${command.frame}`;
-            skillBox.appendChild(info_command);
-            skillBox.appendChild(info_frame);
-
-            flexContainer.appendChild(skillBox);
-          }
-          commandList.appendChild(flexContainer);
-        }
-      } else {
-        displayAllCommands();
-      }
-    }
-
-    function displayAllCommands() {
-      const commandList = document.querySelector('.commandList');
-      commandList.innerHTML = '';
-      // Flex 컨테이너 요소 생성
-      const flexContainer = document.createElement('div');
-      flexContainer.classList.add('flexContainer');
-
-      // for (const skill in commandData.skill) {
-      //   const command = commandData.skill[skill];
-
-      //   const skillBox = document.createElement('div');
-      //   skillBox.classList.add('skillBox');
-
-      //   const name = document.createElement('p');
-      //   name.textContent = command.name_en;
-      //   skillBox.appendChild(name);
-
-      //   const info_command = document.createElement('p');
-      //   info_command.innerHTML += `Command : `+commandToImg(command.command);
-      //   const info_frame = document.createElement('p');
-      //   info_frame.textContent += `Frame : ${command.frame}`;
-      //   skillBox.appendChild(info_command);
-      //   skillBox.appendChild(info_frame);
-
-      //   flexContainer.appendChild(skillBox);
-      // }
-      for (const skill in commandData.skill) {
-        const command = commandData.skill[skill];
-
-        const command_table = document.createElement('table');
-        command_table.classList.add('command_table');
-        command_table.innerHTML =
-          `
-        <tr>
-          <td class="command_num">${command.number}</td>
-            <td colspan="2" class="command_name">${command.name_en}</td>
-            <td colspan="2" class="favorite_check_star_td">
-                <div class="favorite_check_box">
-                    <img src="./assets/img/star/star-line.png" class="favorite_check_star">
-                    <img src="./assets/img/star/star-fill.png" class="favorite_check_star_filled">
+    <div class="bottomFrame">
+        <div class="bottomLeftFrame">
+            <div class="characterSearch">
+                <input type="text" id="characterInput" placeholder="캐릭터 검색" oninput="displayCharacters(this.value)"
+                    onkeydown="handleSearch(event)">
+            </div>
+            <div class="characterList"></div>
+        </div>
+        <div class="commandFrame">
+            <div class="searchBox">
+                <div class="commandSearch">
+                    <input type="text" id="searchInput" placeholder="Searching Command Name" oninput="displayCommands(this.value)">
+                    <div id="searchToolTip">( Starting with . ->Search Command ex) . 236 . lplprprp   )</div>
                 </div>
-            </td>  
-        </tr>
-        <tr>
-            <td rowspan="3">공백</td>
-            <td rowspan="3" class="command">${commandToImg(command.command)}</td>
-            <td rowspan="3">스크류</td>
-            <td>데미지</td>
-            <td>${command.damage}</td>
-        </tr>
-        <tr>
-            <td>시작f</td>
-            <td>${command.frame}</td>
-        </tr>
-        <tr>
-            <td>방어f</td>
-            <td>${command.blockedFrame}</td>
-        </tr>
-        <tr>
-            <td>Stance</td>
-            <td rowspan="2">${command.hitPosition}</td>
-            <td rowspan="2">2</td>
-            <td>히트f</td>
-            <td>${command.hitFrame}</td>
-        </tr>
-        <tr>
-            <td>${command.stance}</td>
-            <td>카운터f</td>
-            <td>${command.counterHitFrame}</td>
-        </tr>
-        `
-        flexContainer.appendChild(command_table);
-      }
-      commandList.appendChild(flexContainer);
-    }
-
-    function displayAllCharacters() {
-      const characterConatainer = document.querySelector('.characterContainer');
-      characterConatainer.innerHTML = '';
-
-      const flexContainer = document.createElement('div');
-      flexContainer.classList.add('flexContainer');
-      for (const name in characterListData.name) {
-        const characterBox = document.createElement('div');
-        characterBox.classList.add('characterBox');
-
-        const info = document.createElement('p');
-        info.textContent = name;
-
-        characterBox.appendChild(info);
-        characterBox.addEventListener('click', function () {
-          fetchCharacterData(name);
-        });
-
-        flexContainer.appendChild(characterBox);
-      }
-      characterConatainer.appendChild(flexContainer);
-    }
-
-    function commandToImg(cmd) {
-      cmd += ' ';
-      let imgHTML = "";
-      let button = '';
-      let index = 0;
-      while (index < cmd.length) {
-        if (cmd[index] == '.') {
-          // 방향키
-          button = '.';
-          let dirc = cmd[index + 1];
-          let isHold = cmd[index + 2] == '+' ? true : false;
-          if (isHold) {
-            imgHTML += `<img src='./assets/img/direction_hold/${dirc}.svg' width=30>`
-            index += 3;
-            continue;
-          } else {
-            imgHTML += `<img src='./assets/img/direction/${dirc}.svg' width=30>`
-            index += 2;
-            continue;
-          }
-        } else if (cmd[index] == 'N') {
-          // 중립
-          imgHTML += "<img src='./assets/img/direction/n.svg' width=40>";
-          index++;
-          continue;
-        } else if (!isNaN(cmd[index]) && cmd[index] != ' ') {
-          // 숫자. 버튼
-          let button = '';
-          for (let j = index; j < cmd.length; j++) {
-            if (isNaN(cmd[j]) || cmd[j] == ' ') {
-              break;
-            }
-            button += cmd[j];
-          }
-          imgHTML += `<img src='./assets/img/button/${button}.svg' width=30>`
-          index += button.length;
-        } else if (cmd[index] == ' ') {
-          imgHTML += '&nbsp;'
-          index++;
-        } else {
-          imgHTML += cmd[index];
-          index++;
-        }
-      }
-      return imgHTML;
-    }
-
-    // 페이지 시작시 리스트 불러옴
-    fetchCharacterList();
-  </script>
+                <div class="commandCondition">
+                    commandCondition
+                </div>
+            </div>
+            <div class="commandList"></div>
+        </div>
+        <div class="advertisement">
+            <p>기타</p>
+        </div>
+    </div>
 </body>
 
 </html>

@@ -1,0 +1,29 @@
+.command_table td {
+    border : 1px black solid;
+}
+
+.command_table{
+    margin: 5px;
+    border-collapse: collapse;
+    border : 2px black solid;
+    width : 100%;
+}
+.command_num{
+    width :10%;
+}
+.command_name{
+    width :70%;
+}
+.command{
+    width :50%
+}
+
+.favorite_check_star_td{
+    text-align: right;
+}
+.favorite_check_box:hover .favorite_check_star{
+    visibility: hidden;
+}
+.favorite_check_box:hover .favorite_check_star_filled{
+    visibility: hidden;
+}
