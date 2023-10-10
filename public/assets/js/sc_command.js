@@ -4,34 +4,80 @@ function displayCommands(searchValue = '') {
 
     const flexContainer = document.createElement('div');
     flexContainer.classList.add('flexContainer');
-    if(searchValue.startsWith(".")){
-        // 커맨드로 검색
-        let command = searchValue.toLowerCase().split(' ').join('');
-        command = command.substring(1);
+    if (searchValue.startsWith(".")) {
+        // 커맨드로 포맷
+        let userCommand = searchValue.toLowerCase().split(' ').join('');
+        userCommand = userCommand.substring(1);
+        let formattedCommand = "";
         // 236 rp lp가 검색되었다 -> 236rplp고 236은 방향키 rplp는 버튼
         /* 
         236rplp에서
         숫자 -> 방향키
         영어 -> r,l로 시작하는 것 + n인것
         */
-        for(let i =0;i<command.length;i++){
-            if(!isNaN(Number(command[i]))){
-                
-            }else{
-                
+        for (let i = 0; i < userCommand.length; i++) {
+            if (!isNaN(Number(userCommand[i]))) {
+                // 방향키
+                formattedCommand += "." + userCommand[i] + " ";
+            } else {
+                // 액션
+                if (userCommand[i] == "l" || userCommand[i] == "r" || userCommand[i] == "a") {
+                    let act = "";
+                    if (i + 1 < userCommand.length) act = userCommand[i] + userCommand[i + 1];
+                    switch (act) {
+                        case "lp":
+                            formattedCommand += "1 ";
+                            break;
+                        case "rp":
+                            formattedCommand += "2 ";
+                            break;
+                        case "lk":
+                            formattedCommand += "3 ";
+                            break;
+                        case "rk":
+                            formattedCommand += "4 ";
+                            break;
+                        case "al":
+                            formmatedCommand += "13 ";
+                            break;
+                        case "ar":
+                            formmatedCommand += "24 ";
+                            break;
+                        case "ab":
+                            formattedCommand += "1234 ";
+                            break;
+                    }
+                    i++;
+                } else {
+                    if (userCommand[i] == "]" && formattedCommand[formattedCommand.length - 1] == " ") {
+                        formattedCommand = formattedCommand.trimEnd();
+                    }
+                    formattedCommand += userCommand[i] + " ";
+                }
             }
         }
-    }else{
+        formattedCommand = formattedCommand.trimEnd();
+        console.log("formmated : " + formattedCommand);
+        //커맨드로 검색
+        for (let skill in commandData.skill) {
+            let command = commandData.skill[skill];
+            if (searchValue && !command.command.includes(formattedCommand)) {
+                continue;
+            }
+
+            flexContainer.appendChild(createCommandTable(command));
+        }
+    } else {
         // 이름으로 검색
-        for (const skill in commandData.skill) {
+        for (let skill in commandData.skill) {
             const command = commandData.skill[skill];
             // console.log(command);
             const skillName = skill.toLowerCase().split(' ').join('');
-    
+
             if (searchValue && !skillName.includes(searchValue.toLowerCase().split(' ').join(''))) {
                 continue;
             }
-    
+
             flexContainer.appendChild(createCommandTable(command));
         }
     }
@@ -84,9 +130,6 @@ function createCommandTable(command) {
     return command_table;
 }
 
-function getCommand(event){
-    
-}
 function commandToImg(cmd) {
     cmd += ' ';
     let imgHTML = "";
