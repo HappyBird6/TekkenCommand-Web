@@ -25,3 +25,13 @@ function fetchCharacterData() {
             console.error('캐릭터 리스트 호출 중 오류가 발생했습니다.', error);
         })
 }
+function fetchUserInfoData(){
+    fetch(`/user/userinfo`)
+    .then(response=>response.json())
+    .then(data=>{
+        createUserInfoHTML(data);
+    })
+    .catch(error=>{
+        console.error('유저 정보를 받아오는 중 오류가 발생했습니다.',error);
+    })
+}
