@@ -6,7 +6,7 @@ function fetchCommandData(character) {
         .then(data => {
             // 전체 커맨드 목록 업데이트
             commandData = data;
-            console.log(commandData);
+            //console.log(commandData);
             displayCommands();
         })
         .catch(error => {
@@ -18,7 +18,7 @@ function fetchCharacterData() {
         .then(response => response.json())
         .then(data => {
             characterData = data;
-            console.log(characterData.name);
+            //console.log(characterData.name);
             displayCharacters();
         })
         .catch(error => {

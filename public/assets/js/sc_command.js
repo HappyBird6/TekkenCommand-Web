@@ -37,6 +37,12 @@ function displayCommands(searchValue = '') {
                         case "rk":
                             formattedCommand += "4 ";
                             break;
+                        case "ap":
+                            formmatedCommand += "12 ";
+                            break;
+                        case "ak":
+                            formmatedCommand += "34 ";
+                            break;
                         case "al":
                             formmatedCommand += "13 ";
                             break;
@@ -57,7 +63,7 @@ function displayCommands(searchValue = '') {
             }
         }
         formattedCommand = formattedCommand.trimEnd();
-        console.log("formmated : " + formattedCommand);
+        //console.log("formmated : " + formattedCommand);
         //커맨드로 검색
         for (let skill in commandData.skill) {
             let command = commandData.skill[skill];
