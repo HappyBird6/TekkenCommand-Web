@@ -16,17 +16,18 @@ exports.fetchUser = async function(username) {
 }
 
 exports.createUser = async function(newUser) {
-    console.log("CreateUser : "+newUser);
     console.log("암호화 시작 --- 기존password : "+newUser.password);
     const hashedPassword = await enc.encrypt(newUser.password, 10);
     // 10이라는 인자는 salt라고 부른는 값으로 이 값이 클수록 여러번 해시함수를 돌려 암호화속도를
     // 일부러 늦춰서 해킹 방지
     const users = await fetchAllUsers();
-    users.push({
+    const user = {
         ...newUser,
         password:hashedPassword
-    });
+    };
+    users.push(user);
     await fs.writeFile(USERS_JSON_FILENAME, JSON.stringify(users));
+    return user;
 }
 exports.removeUser = async function(username) {
     const users = await fetchAllUsers();

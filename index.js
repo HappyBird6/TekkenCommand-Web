@@ -21,7 +21,6 @@ app.use(express.urlencoded({extended : true}));
 // Auth Middleware
 app.use('/',(req, res, next)=>{
     const token = req.cookies[USER_COOKIE_KEY];
-    console.log(__dirname);
     if (token) {
         const username = jwt.verifyToken(token);
         if (username !== null) {

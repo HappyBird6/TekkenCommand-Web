@@ -1,3 +1,0 @@
-GOOGLE_CLIENT_ID = "726408378175-ev79fi4vulsdavgnfefel028ssvm0rlg.apps.googleusercontent.com"
-GOOGLE_CLIENT_SECRET = "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"
-JWT_SECRET = 's1f6gs30g311gd31g3s1e'
