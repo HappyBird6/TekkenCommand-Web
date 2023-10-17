@@ -80,7 +80,7 @@ html {
 }
 #searchToolTip{
     height : 25%;
-    font-size: 5px;
+    font-size: 10px;
 }
 .commandSearch input {
     width : 100%;

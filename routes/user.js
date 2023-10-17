@@ -66,8 +66,6 @@ router.get('/login_google', async (req, res) => {
     res.redirect(url);
 })
 router.get(GOOGLE_LOGIN_REDIRECT_PATH, async (req, res) => {
-
-
     try {
         const { code } = req.query;
         console.log(code);

@@ -21,9 +21,10 @@
 .favorite_check_star_td{
     text-align: right;
 }
-.favorite_check_box:hover .favorite_check_star{
-    visibility: hidden;
+.commentTableFrame1{
+    
+    
 }
-.favorite_check_box:hover .favorite_check_star_filled{
-    visibility: hidden;
+.commentTableFrame2{
+    
 }

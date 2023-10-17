@@ -87,7 +87,6 @@ function displayCommands(searchValue = '') {
             flexContainer.appendChild(createCommandTable(command));
         }
     }
-
     commandList.appendChild(flexContainer);
 }
 
@@ -95,13 +94,14 @@ function createCommandTable(command) {
     const command_table = document.createElement('table');
     command_table.classList.add('command_table');
     command_table.innerHTML = `
+    <table>
         <tr>
           <td class="command_num">${command.number}</td>
             <td colspan="2" class="command_name">${command.name_en}</td>
             <td colspan="2" class="favorite_check_star_td">
                 <div class="favorite_check_box">
-                    <img src="./assets/img/star/star-line.png" class="favorite_check_star">
-                    <img src="./assets/img/star/star-fill.png" class="favorite_check_star_filled">
+                    <img src="./assets/img/star/star-line.png" onclick="setFavorite(${command.number},${true})">
+                    <img src="./assets/img/star/star-fill.png" onclick="setFavorite(${command.number},${false}">
                 </div>
             </td>  
         </tr>
@@ -123,7 +123,7 @@ function createCommandTable(command) {
         <tr>
             <td>Stance</td>
             <td rowspan="2">${command.hitPosition}</td>
-            <td rowspan="2">2</td>
+            <td rowspan="2" onclick=displayComments(${command.number})>COMMENT CLICK</td>
             <td>히트f</td>
             <td>${command.hitFrame}</td>
         </tr>
@@ -132,7 +132,12 @@ function createCommandTable(command) {
             <td>카운터f</td>
             <td>${command.counterHitFrame}</td>
         </tr>
-        `
+    </table>
+    <table>
+        <tr style="visibility:collapse" class="commentTableFrame1" id="commentOutput_${command.number}"></tr>
+        <tr style="visibility:collapse" class="commentTableFrame2" id="commentInput_${command.number}" ></tr>
+    </table>
+    `
     return command_table;
 }
 
