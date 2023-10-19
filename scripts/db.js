@@ -1,37 +1,73 @@
-const fs = require('fs').promises;
+require('dotenv').config();
+const mariadb = require('mariadb');
 const enc = require('./encryption.js');
-const USERS_JSON_FILENAME='users.json';
+
+let users;
+
+const pool = mariadb.createPool({
+    host: process.env.DBHOST,
+    port: process.env.DBPORT,
+    user: process.env.DBUSER, 
+    password: process.env.DBPASS,
+    connectionLimit: 5
+});
 
 // DATABASE
 async function fetchAllUsers() {
-    const data = await fs.readFile(USERS_JSON_FILENAME);
-    const users = JSON.parse(data.toString());
-    return users;
+    if(users) return users;
+    try{
+        console.log("저장된 users 없음. fetching DB");        
+        conn = await pool.getConnection();
+        conn.query('USE tekkencommandwebdb');
+        users = await conn.query('SELECT * FROM users');
+        // JSON.stringify(rows)로 출력
+    }
+    finally{
+        if(conn) conn.release();
+        return users;
+    }
 }
 
-exports.fetchUser = async function(username) {
+exports.fetchUser = async function(id) {
     const users = await fetchAllUsers();
-    const user = users.find((user) => user.username === username);
+    const user = users.find((user) => user.id === id);
     return user;
 }
 
 exports.createUser = async function(newUser) {
-    console.log("암호화 시작 --- 기존password : "+newUser.password);
+    // newUser = {
+    //    id:~
+    //    password:~
+    //    nickname:~    
+    // }
     const hashedPassword = await enc.encrypt(newUser.password, 10);
-    // 10이라는 인자는 salt라고 부른는 값으로 이 값이 클수록 여러번 해시함수를 돌려 암호화속도를
-    // 일부러 늦춰서 해킹 방지
-    const users = await fetchAllUsers();
-    const user = {
-        ...newUser,
-        password:hashedPassword
-    };
-    users.push(user);
-    await fs.writeFile(USERS_JSON_FILENAME, JSON.stringify(users));
-    return user;
+    const res = await conn.query("INSERT INTO users value (?, ?, ?, ?)", [0, newUser.id, hashedPassword,newUser.nickname]);
+    if(res.affectedRows==1){
+        console.log("createUser 성공");
+        let user={
+            id:newUser.id,
+            nickname:newUser.nickname
+        }
+        users.push({
+            ...user,
+            password:hashedPassword
+        });
+        return user;
+    }else{
+        console.log("createUser 실패");
+        return user={
+            id:"X",
+            nickname:"X"
+        };
+    }
+    
 }
-exports.removeUser = async function(username) {
+exports.removeUser = async function(id) {
     const users = await fetchAllUsers();
-    const index = users.findIndex(u => u.username === username);
-    users.splice(index, 1);
-    await fs.writeFile(USERS_JSON_FILENAME, JSON.stringify(users));
+    const res = await conn.query("DELETE FROM users where id = ?", [id]);
+    if(res==1){
+        console.log("removeUser 성공");
+    }else{
+        console.log("removeUser 실패");
+    }
 }

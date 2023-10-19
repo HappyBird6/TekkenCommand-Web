@@ -33,10 +33,10 @@
         </div>
         <div id="userInfo">
             <%
-            if(!username){%>
+            if(!id){%>
                 <button id="loginBtn" onclick="location.href='/user/login'">로그인하러 가기</button>
             <%}else{%>
-                <p> username : <%=username%> <p>
+                <p> id : <%=id%> <p>
                 <button id="logoutBtn" onclick="location.href='/user/logout/redirect'">로그아웃</button>
             <%}
             %>

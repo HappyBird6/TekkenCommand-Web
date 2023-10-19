@@ -22,9 +22,9 @@ app.use(express.urlencoded({extended : true}));
 app.use('/',(req, res, next)=>{
     const token = req.cookies[USER_COOKIE_KEY];
     if (token) {
-        const username = jwt.verifyToken(token);
-        if (username !== null) {
-            req.username = username;
+        const id = jwt.verifyToken(token);
+        if (id !== null) {
+            req.id = id;
         }
     }
     next();
@@ -36,16 +36,16 @@ app.use('/user',require('./routes/user.js').router);
 //ROUTES
 app.get('/', async (req, res)=> {
     //res.sendFile(__dirname+"/public/views/index.ejs");
-    if(req.username){
-        console.log("쿠키에 req.username 존재 o : "+req.username);
-        const user = await db.fetchUser(req.username);
+    if(req.id){
+        console.log("쿠키에 req.id 존재 o : "+req.id);
+        const user = await db.fetchUser(req.id);
         if(user){
             
         }else{
             
         }
     }else{
-        console.log("쿠키에 req.username 존재x");
+        console.log("쿠키에 req.id 존재x");
     }
-    res.render('index', { username: req.username });
+    res.render('index', { id: req.id });
 });

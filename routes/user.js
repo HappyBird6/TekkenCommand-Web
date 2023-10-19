@@ -21,9 +21,9 @@ router.use('/', (req, res, next) => {
     const token = req.cookies[USER_COOKIE_KEY];
 
     if (token) {
-        const username = jwt.verifyToken(token);
-        if (username !== null) {
-            req.username = username;
+        const id = jwt.verifyToken(token);
+        if (id !== null) {
+            req.id = id;
         } else {
             res.cookie(USER_COOKIE_KEY, token, { maxAge: 0 });
         }
@@ -35,8 +35,8 @@ router.get('/login', async (req, res) => {
     res.redirect('/html/login.html');
 });
 router.post('/login/redirect', async (req, res) => {
-    const { username, password } = req.body;
-    const user = await db.fetchUser(username);
+    const { id, password } = req.body;
+    const user = await db.fetchUser(id);
     if (!user) {
         // db에 아이디 없음
         res.status(400).send(`등록안된 사용자`);
@@ -52,7 +52,7 @@ router.post('/login/redirect', async (req, res) => {
         return;
     }
     console.log("/login/redirect : 로그인 성공");
-    const token = jwt.generateToken(user.username);
+    const token = jwt.generateToken(user.id);
     res.cookie(USER_COOKIE_KEY, token);
     res.redirect('/');
 })
@@ -83,18 +83,19 @@ router.get(GOOGLE_LOGIN_REDIRECT_PATH, async (req, res) => {
                 Authorization: `Bearer ${resp.data.access_token}`,
             },
         });
-        const username = resp2.data.email;
+        const id = resp2.data.email;
         const password = resp2.data.id;
         // resp2.data.~~ 에서 정보 몇개를 db에서 체크.
 
-        let user = await db.fetchUser(username);
+        let user = await db.fetchUser(id);
     
         if (!user) {
             console.log("새 구글 유저"); 
             // db에 아이디 없음 -> db에 등록
             const newUser = {
-                username,
-                password,
+                id : id,
+                password : password,
+                nickname : "구글유저임시닉네임"
             }; 
             user = await db.createUser(newUser); 
         }
@@ -111,10 +112,11 @@ router.get(GOOGLE_LOGIN_REDIRECT_PATH, async (req, res) => {
                 return;
             }
         }
-        const token = jwt.generateToken(user.username); 
+        const token = jwt.generateToken(user.id); 
         res.cookie(USER_COOKIE_KEY, token);
     } catch (err) {
         console.log("구글 로그인 오류");
+        console.log(err);
     }finally{
         res.redirect('/');
     }
@@ -125,23 +127,24 @@ router.get('/signup', async (req, res) => {
 })
 
 router.post('/signup/redirect', async (req, res) => {
-    const { username, password } = req.body;
+    const { nickname, id, password } = req.body;
 
-    const user = await db.fetchUser(username);
+    const userChk = await db.fetchUser(id);
 
-    if (user) {
+    if (userChk) {
         // 아이디 중복 처리
-        res.status(400).send(`duplicate username : ${username}`);
+        res.status(400).send(`duplicate id : ${id}`);
         console.log("/signup/redirect : 아이디 중복");
         return;
     }
     const newUser = {
-        username,
-        password,
+        id : id,
+        password : password,
+        nickname : nickname
     };
-    await db.createUser(newUser);
+    const user = await db.createUser(newUser);
 
-    const token = jwt.generateToken(newUser.username);
+    const token = jwt.generateToken(user.id);
     res.cookie(USER_COOKIE_KEY, token);
     res.redirect('/');
 })
