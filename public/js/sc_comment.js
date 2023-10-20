@@ -1,9 +1,12 @@
 let comments = [];
 let commentOutput;
 let commentInput;
-function displayComments(num) {
-    commentOutput = document.getElementById(`commentOutput_${num}`);
-    commentInput = document.getElementById(`commentInput_${num}`);
+
+const currentURL = window.location.href;
+
+async function displayComments(character, commNum) {
+    commentOutput = document.getElementById(`commentOutput_${commNum}`);
+    commentInput = document.getElementById(`commentInput_${commNum}`);
     const commentOutputState = commentOutput.style.visibility;
     if (commentOutputState === "collapse") {
         commentOutput.style.visibility = "initial";
@@ -13,43 +16,50 @@ function displayComments(num) {
         commentOutput.style.visibility = "collapse"
         return;
     }
-    const comments = loadComments(num);
+    await loadComments(character, commNum);
     commentOutput.innerHTML = loadPage(0);
     commentInput.innerHTML = `<td colspan="5">댓글 입력란</td>`;
 }
-function loadComments(num) {
+async function loadComments(character, commNum) {
     //db에서 comments 불러와야됨.
-    comments = [
-        "댓글 1",
-        "댓글 2",
-        "댓글 3",
-        "댓글 4",
-        "댓글 5",
-        "댓글 6",
-        "댓글 7",
-        "댓글 8",
-        "댓글 9",
-        "댓글 10",
-        "댓글 11",
-        "댓글 12",
-        "댓글 13"
-    ];
+    await fetch(currentURL + `comment/${character.replaceAll(' ','')}/${commNum}`)
+        .then(response => response.json())
+        .then(data => {
+            comments = data;
+        })
+        .catch(error => {
+            console.error('loadComments 호출 중 오류가 발생했습니다.', error);
+        })
 }
 function loadPage(nowPage) {
     const pageSize = 5; // 페이지당 댓글 수
     const totalPages = Math.ceil(comments.length / pageSize);
-    let html = `<div id="commentList">`;
-    for (let i = nowPage * pageSize; i < (nowPage + 1) * pageSize && i < comments.length; i++) {
+    let skip = nowPage * pageSize;
+    let cnt = 0;
+    let html = `<td colspan = '5'><div id="commentList">`;
+    for (let commentIdx in comments) {
+        let comment = comments[commentIdx];
+        if (skip > 0) {
+            skip--;
+            continue;
+        }
+        if (cnt===pageSize) break;
         html += `<div class="comment">`;
-        html += comments[i];
+        html += `${comment.user_seq} / ${comment.comment} /  ${comment.wdate} / ${comment.up} / ${comment.down}`;
         html += `</div>`;
+        cnt++;
     }
+    // for (let i = nowPage * pageSize; i < (nowPage + 1) * pageSize && i < Object.keys(comments).length; i++) {
+    //     html += `<div class="comment">`;
+    //     html += comments.index
+    //     html += `</div>`;
+    // }
     html += `</div>`;
     html += `<div id="pagination">`;
     for (let page = 0; page < totalPages; page++) {
-        let nextPage = page+1;
-        html += `<a href="#" onclick="loadPage(${page})">${nextPage}</a>`;
+        let nextPage = page + 1;
+        html += `<a href="javascript:;" onclick="loadPage(${page})">${nextPage}</a>`;
     }
-    html +=`</div>`;
+    html += `</div></td>`;
     return commentOutput.innerHTML = html;
 }

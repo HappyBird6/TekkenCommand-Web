@@ -1,12 +1,5 @@
-function displayCommands(searchValue = '') {
-    const commandList = document.querySelector('.commandList');
-    commandList.innerHTML = '';
-
-    const flexContainer = document.createElement('div');
-    flexContainer.classList.add('flexContainer');
-    if (searchValue.startsWith(".")) {
-        // 커맨드로 포맷
-        let userCommand = searchValue.toLowerCase().split(' ').join('');
+function formatCommand(searchValue){
+    let userCommand = searchValue.toLowerCase().split(' ').join('');
         userCommand = userCommand.substring(1);
         let formattedCommand = "";
         // 236 rp lp가 검색되었다 -> 236rplp고 236은 방향키 rplp는 버튼
@@ -64,6 +57,16 @@ function displayCommands(searchValue = '') {
         }
         formattedCommand = formattedCommand.trimEnd();
         //console.log("formmated : " + formattedCommand);
+        return formmatedCommand;
+}
+function displayCommands(searchValue = '') {
+    const commandList = document.querySelector('.commandList');
+    commandList.innerHTML = '';
+
+    const flexContainer = document.createElement('div');
+    flexContainer.classList.add('flexContainer');
+    if (searchValue.startsWith(".")) {
+        let formattedCommand = formatCommand(searchValue);
         //커맨드로 검색
         for (let skill in commandData.skill) {
             let command = commandData.skill[skill];
@@ -123,7 +126,7 @@ function createCommandTable(command) {
         <tr>
             <td>Stance</td>
             <td rowspan="2">${command.hitPosition}</td>
-            <td rowspan="2" onclick=displayComments(${command.number})>COMMENT CLICK</td>
+            <td rowspan="2" onclick="displayComments('${commandData.character}',${command.number})">COMMENT CLICK</td>
             <td>히트f</td>
             <td>${command.hitFrame}</td>
         </tr>

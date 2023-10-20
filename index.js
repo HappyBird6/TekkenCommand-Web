@@ -4,7 +4,8 @@ const path              = require('path');
 const cookieParser      = require('cookie-parser'); // 쿠키
 const jwt               = require('./scripts/jwt.js');
 const USER_COOKIE_KEY   = require('./routes/user.js').USER_COOKIE_KEY;
-const db                = require('./scripts/db.js');
+const USERDB            = require('./scripts/DAO/userDAO.js');
+const COMMENTDB         = require('./scripts/DAO/commentDAO.js');
 
 const app = express();
 const server = app.listen(3000, () => {
@@ -31,6 +32,7 @@ app.use('/',(req, res, next)=>{
 });
 
 app.use('/user',require('./routes/user.js').router);
+app.use('/comment',require('./routes/comment.js').router);
 
 
 //ROUTES
@@ -38,7 +40,7 @@ app.get('/', async (req, res)=> {
     //res.sendFile(__dirname+"/public/views/index.ejs");
     if(req.id){
         console.log("쿠키에 req.id 존재 o : "+req.id);
-        const user = await db.fetchUser(req.id);
+        const user = await USERDB.fetchUser(req.id);
         if(user){
             
         }else{
