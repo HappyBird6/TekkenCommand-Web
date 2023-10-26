@@ -1,12 +1,12 @@
 require('dotenv').config();
-const USERDB = require('../scripts/DAO/userDAO.js');
+const UserDAO = require('../scripts/DAO/UserDAO.js');
+const UserTO = require('../scripts/TO/UserTO.js');
 const jwt = require('../scripts/jwt.js');
 const enc = require('../scripts/encryption.js');
 const express = require('express');
 const axios = require('axios');
-
+const USER_COOKIE_KEY = process.env.USER_COOKIE_KEY;
 const router = express.Router();
-const USER_COOKIE_KEY = 'USER';
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
@@ -19,7 +19,7 @@ const GOOGLE_USERINFO_URL = 'https://www.googleapis.com/oauth2/v2/userinfo';
 
 router.use('/', (req, res, next) => {
     const token = req.cookies[USER_COOKIE_KEY];
-
+    
     if (token) {
         const id = jwt.verifyToken(token);
         if (id !== null) {
@@ -36,26 +36,26 @@ router.get('/login', async (req, res) => {
 });
 router.post('/login/redirect', async (req, res) => {
     const { id, password } = req.body;
-    const user = await USERDB.fetchUser(id);
-    if (!user) {
+    let userTO = await UserDAO.fetchUser(new UserTO(id));
+    if (!userTO.nickname) {
         // db에 아이디 없음
         res.status(400).send(`등록안된 사용자`);
-        //console.log("/login_ok : 없는 아이디");
         return;
     }
-    // db에 아이디 있음
-    const chkPassword = await enc.decrypt(password, user.password);
+
+    const chkPassword = await enc.decrypt(password, userTO.password);
     if (!chkPassword) {
         // 패스워드 오류
         res.status(400).send("패스워드 오류");
-        //console.log("/login_ok : 패스워드 오류");
         return;
     }
-    //console.log("/login/redirect : 로그인 성공");
-    const token = jwt.generateToken(user.id);
+    // 로그인 성공, jwt 토큰 생성
+    const token = jwt.generateToken(userTO);
     res.cookie(USER_COOKIE_KEY, token);
     res.redirect('/');
 })
+
+// 구글 로그인
 router.get('/login_google', async (req, res) => {
     let url = 'https://accounts.google.com/o/oauth2/v2/auth';
     url += `?client_id=${GOOGLE_CLIENT_ID}`
@@ -65,6 +65,7 @@ router.get('/login_google', async (req, res) => {
 
     res.redirect(url);
 })
+// 구글 로그인 redirect
 router.get(GOOGLE_LOGIN_REDIRECT_PATH, async (req, res) => {
     try {
         const { code } = req.query;
@@ -86,22 +87,18 @@ router.get(GOOGLE_LOGIN_REDIRECT_PATH, async (req, res) => {
         const password = resp2.data.id;
         // resp2.data.~~ 에서 정보 몇개를 db에서 체크.
 
-        let user = await USERDB.fetchUser(id);
+        let userTO = await UserDAO.fetchUser(new UserTO(id));
     
-        if (!user) {
-            //console.log("새 구글 유저"); 
+        if (!userTO.nickname) {
             // db에 아이디 없음 -> db에 등록
-            const newUser = {
-                id : id,
-                password : password,
-                nickname : "구글유저임시닉네임"
-            }; 
-            user = await USERDB.createUser(newUser); 
+            let newUser = new UserTO(id,password,"구글유저임시닉네임");
+
+            user = await UserDAO.createUser(newUser); 
         }
         else {
             //console.log("기존 구글 유저");
             // db에 아이디 있음
-            const chkPassword = await enc.decrypt(password, user.password);
+            const chkPassword = await enc.decrypt(password, userTO.password);
             if (!chkPassword) {
                 // 패스워드 오류
                 //console.log("패스 워드 오류");
@@ -111,7 +108,7 @@ router.get(GOOGLE_LOGIN_REDIRECT_PATH, async (req, res) => {
                 return;
             }
         }
-        const token = jwt.generateToken(user.id); 
+        const token = jwt.generateToken(userTO); 
         res.cookie(USER_COOKIE_KEY, token);
     } catch (err) {
         //console.log("구글 로그인 오류");
@@ -127,23 +124,19 @@ router.get('/signup', async (req, res) => {
 
 router.post('/signup/redirect', async (req, res) => {
     const { nickname, id, password } = req.body;
+    //console.log(id);
+    let userTO = await UserDAO.fetchUser(new UserTO(id));
 
-    const userChk = await USERDB.fetchUser(id);
-
-    if (userChk) {
+    if (userTO.nickname!=='') {
         // 아이디 중복 처리
         res.status(400).send(`duplicate id : ${id}`);
-        //console.log("/signup/redirect : 아이디 중복");
         return;
     }
-    const newUser = {
-        id : id,
-        password : password,
-        nickname : nickname
-    };
-    const user = await USERDB.createUser(newUser);
+    userTO.nickname = nickname;
+    userTO.password = password;
+    userTO = await UserDAO.createUser(userTO);
 
-    const token = jwt.generateToken(user.id);
+    const token = jwt.generateToken(userTO);
     res.cookie(USER_COOKIE_KEY, token);
     res.redirect('/');
 })

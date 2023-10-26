@@ -14,6 +14,7 @@
     <script src="../js/sc_comment.js"></script>
     <script src="../js/sc_fetching.js"></script>
     <script src="../js/sc_favorite.js"></script>
+    <script src="../js/sc_cookie.js"></script>
     <script>
         window.onload = function(){
             fetchCharacterData();
@@ -33,11 +34,12 @@
         </div>
         <div id="userInfo">
             <%
-            if(!id){%>
-                <button id="loginBtn" onclick="location.href='/user/login'">로그인하러 가기</button>
-            <%}else{%>
-                <p> id : <%=id%> <p>
+            if(userTO && userTO.nickname){%>
+                <p> nickname : <%=userTO.nickname%> <p>
                 <button id="logoutBtn" onclick="location.href='/user/logout/redirect'">로그아웃</button>
+            
+            <%}else{%>
+                <button id="loginBtn" onclick="location.href='/user/login'">로그인하러 가기</button>
             <%}
             %>
         </div>

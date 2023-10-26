@@ -6,8 +6,10 @@ function fetchCommandData(character) {
         .then(data => {
             // 전체 커맨드 목록 업데이트
             commandData = data;
+            setCookie("character",character.replaceAll(' ',''),1);
             //console.log(commandData);
             displayCommands();
+            
         })
         .catch(error => {
             console.error('API 호출 중 오류가 발생했습니다.', error);

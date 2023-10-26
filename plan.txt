@@ -1,0 +1,15 @@
+
+6. 세션, 쿠키 정보 관리
+
+4. 즐겨찾기 기능 만들기 위해
+5. 마이페이지 구현
+6. 기능 구현
+
+쿠키에 들어가는 정보수정
+
+쿠키
+1. userSeq_userNickname
+2. isLogin
+3. character
+4. nowPage
+

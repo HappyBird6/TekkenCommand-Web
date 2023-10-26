@@ -126,7 +126,7 @@ function createCommandTable(command) {
         <tr>
             <td>Stance</td>
             <td rowspan="2">${command.hitPosition}</td>
-            <td rowspan="2" onclick="displayComments('${commandData.character}',${command.number})">COMMENT CLICK</td>
+            <td rowspan="2" onclick="displayComments(${command.number})">COMMENT CLICK</td>
             <td>히트f</td>
             <td>${command.hitFrame}</td>
         </tr>
@@ -137,8 +137,8 @@ function createCommandTable(command) {
         </tr>
     </table>
     <table>
-        <tr style="visibility:collapse" class="commentTableFrame1" id="commentOutput_${command.number}"></tr>
-        <tr style="visibility:collapse" class="commentTableFrame2" id="commentInput_${command.number}" ></tr>
+        <tr style="visibility:collapse" class="commentTableFrame1" id="commentOutput_${getCookie("character")}_${command.number}"></tr>
+        <tr style="visibility:collapse" class="commentTableFrame2" id="commentInput_${getCookie("character")}_${command.number}" ></tr>
     </table>
     `
     return command_table;
