@@ -28,7 +28,8 @@ class UserDAO {
             UserDAO.#conn = await UserDAO.#pool.getConnection();
             UserDAO.#conn.query('USE tekkencommandwebdb');
             //console.log(userTO.id);
-            const users = await UserDAO.#conn.query("SELECT seq, id, password, nickname FROM users WHERE id=?", [userTO.id]);
+            const users = 
+                await UserDAO.#conn.query("SELECT seq, id, password, nickname FROM users WHERE id=? OR nickname=? OR seq=?", [userTO.id,userTO.nickname,userTO.seq]);
             if(users.length===1){
                 // id 하나 발견 성공
                 //console.log("아이디 하나 select");
@@ -47,6 +48,15 @@ class UserDAO {
         
         return userTO;
     }
+    static async fetchUserbyId(id){
+        return this.fetchUser(new UserTO(id))
+    }
+    static async fetchUserbyNickname(nickname){
+        return this.fetchUser(new UserTO("",nickname))
+    }
+    static async fetchUserbySeq(seq){
+        return this.fetchUser(new UserTO("","","",seq));
+    }
     static async createUser(userTO) {
         try{
             this.initializePool();
@@ -55,10 +65,9 @@ class UserDAO {
             UserDAO.#conn.query('USE tekkencommandwebdb');
             const res = await UserDAO.#conn.query("INSERT INTO users (seq, id, password, nickname) VALUE (?, ?, ?, ?)", [0, userTO.id, hashedPassword,userTO.nickname]);
             if(res.affectedRows===1){
-                //userTO = this.fetchUser(userTO); 
+                userTO.password = hashedPassword;
             }else{
-                //console.log("createUser 실패");
-                userTO = new UserTO();
+                return null;
             }
         }catch(err){}
         finally{

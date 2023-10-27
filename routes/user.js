@@ -17,26 +17,12 @@ const GOOGLE_SIGNUP_REDIRECT_URI = 'http://localhost:3000/user' + GOOGLE_SIGNUP_
 const GOOGLE_TOKEN_URL = 'https://oauth2.googleapis.com/token';
 const GOOGLE_USERINFO_URL = 'https://www.googleapis.com/oauth2/v2/userinfo';
 
-router.use('/', (req, res, next) => {
-    const token = req.cookies[USER_COOKIE_KEY];
-    
-    if (token) {
-        const id = jwt.verifyToken(token);
-        if (id !== null) {
-            req.id = id;
-        } else {
-            res.cookie(USER_COOKIE_KEY, token, { maxAge: 0 });
-        }
-    }
-    next();
-});
-
 router.get('/login', async (req, res) => {
     res.redirect('/html/login.html');
 });
 router.post('/login/redirect', async (req, res) => {
     const { id, password } = req.body;
-    let userTO = await UserDAO.fetchUser(new UserTO(id));
+    let userTO = await UserDAO.fetchUserbyId(id);
     if (!userTO.nickname) {
         // db에 아이디 없음
         res.status(400).send(`등록안된 사용자`);
@@ -52,6 +38,7 @@ router.post('/login/redirect', async (req, res) => {
     // 로그인 성공, jwt 토큰 생성
     const token = jwt.generateToken(userTO);
     res.cookie(USER_COOKIE_KEY, token);
+    res.cookie('isLogin',1);
     res.redirect('/');
 })
 
@@ -125,7 +112,7 @@ router.get('/signup', async (req, res) => {
 router.post('/signup/redirect', async (req, res) => {
     const { nickname, id, password } = req.body;
     //console.log(id);
-    let userTO = await UserDAO.fetchUser(new UserTO(id));
+    let userTO = await UserDAO.fetchUserbyId(id);
 
     if (userTO.nickname!=='') {
         // 아이디 중복 처리
@@ -135,15 +122,19 @@ router.post('/signup/redirect', async (req, res) => {
     userTO.nickname = nickname;
     userTO.password = password;
     userTO = await UserDAO.createUser(userTO);
-
-    const token = jwt.generateToken(userTO);
-    res.cookie(USER_COOKIE_KEY, token);
+    if(userTO){
+        const token = jwt.generateToken(userTO);
+        res.cookie(USER_COOKIE_KEY, token);
+    }else{
+        res.status(400).send('아이디 생성 실패');
+    }
     res.redirect('/');
 })
 
 router.get('/logout/redirect', async (req, res) => {
     res.clearCookie(USER_COOKIE_KEY);
+    res.cookie('isLogin',0);
     res.redirect('/');
 })
 
-module.exports = { router, USER_COOKIE_KEY };
+module.exports = { router };

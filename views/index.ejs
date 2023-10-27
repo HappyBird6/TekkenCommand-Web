@@ -34,10 +34,10 @@
         </div>
         <div id="userInfo">
             <%
-            if(userTO && userTO.nickname){%>
-                <p> nickname : <%=userTO.nickname%> <p>
+            if(isLogin==1){%>
+                <p> nickname : <%=nickname%> <p>
                 <button id="logoutBtn" onclick="location.href='/user/logout/redirect'">로그아웃</button>
-            
+                <button id="myPageBtn" onclick="location.href='/myPage'">마이페이지</button>
             <%}else{%>
                 <button id="loginBtn" onclick="location.href='/user/login'">로그인하러 가기</button>
             <%}

@@ -18,7 +18,7 @@ class CommentDAO{
         });
     }
     static async getComments(charName,commNum){
-        let comments
+        let comments;
         try{
             this.initializePool();
             CommentDAO.#conn = await CommentDAO.#pool.getConnection();
@@ -136,8 +136,3 @@ class CommentDAO{
 module.exports = CommentDAO;
 
 
-
-
-
-// 추천 비추천시 이미 추천했는지 안했는지 검사
-// 추천 비추천시 페이지 새로고침;

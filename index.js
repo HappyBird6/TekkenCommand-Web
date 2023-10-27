@@ -24,35 +24,29 @@ app.use(express.urlencoded({ extended: true }));
 
 // Auth Middleware
 app.use('/', async (req, res, next) => {
-    // 쿠키에 jwt 토큰
     const token = req.cookies[USER_COOKIE_KEY];
     if (token) {
         let userTO = jwt.verifyToken(token);
         if (userTO) {
-            req.userTO = userTO;
+            res.cookie('isLogin',1);
+            req.nickname = userTO.nickname;
+        }else{
+            res.cookie('isLogin',0);
+            res.cookie(USER_COOKIE_KEY, token, { maxAge: 0 });
         }
-    }
+    }    
     next();
 });
 
 app.use('/user', require('./routes/user.js').router);
+app.use('/myPage',require('./routes/myPage.js').router);
 app.use('/comment', require('./routes/comment.js').router);
 
 
 //ROUTES
 app.get('/', async (req, res) => {
-    //res.sendFile(__dirname+"/public/views/index.ejs");
-
-    if (req.userTO) {
-        let userTO = await UserDAO.fetchUser(new UserDAO(req.userTO));
-        
-        if (userTO.nickname) {
-            // db에 id 있음.
-        } else {
-            // 잘못된 인증정보.
-        }
-    } else {
-    }
-    res.render('index', { userTO: req.userTO });
+    // 메인페이지
+    // isLogin - 0 : 로그인x, 1 : 로그인o
+    res.render('index', { isLogin : req.cookies['isLogin'], nickname : req.nickname });
 });
 
