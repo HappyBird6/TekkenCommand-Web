@@ -22,12 +22,12 @@ router.post('/vote',async(req,res)=>{
     }
     const commentInfo = req.body.recommendationInfo;
     const up       = commentInfo.split('_')[0];
-    const comm_seq = commentInfo.split('_')[1];
+    const commSeq = commentInfo.split('_')[1];
     const token = req.cookies[USER_COOKIE_KEY];
     if (token) {
         let userTO = jwt.verifyToken(token);
         const user_seq = userTO.seq;
-        let flag = await CommentDAO.voteComment(up,comm_seq,user_seq);
+        let flag = await CommentDAO.voteComment(up,commSeq,user_seq);
         if(flag===1)      res.send('추천이 성공적으로 처리되었습니다.');
         else if(flag===0) res.send('이미 추천 / 비추천한 댓글');
     }else{

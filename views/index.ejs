@@ -20,6 +20,7 @@
             fetchCharacterData();
         }
     </script>
+
 </head>
 
 <body>
@@ -35,7 +36,7 @@
         <div id="userInfo">
             <%
             if(isLogin==1){%>
-                <p> nickname : <%=nickname%> <p>
+                <p style="font-size:12px"> nickname : <%=nickname%><p>
                 <button id="logoutBtn" onclick="location.href='/user/logout/redirect'">로그아웃</button>
                 <button id="myPageBtn" onclick="location.href='/myPage'">마이페이지</button>
             <%}else{%>

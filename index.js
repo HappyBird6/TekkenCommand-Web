@@ -25,15 +25,21 @@ app.use(express.urlencoded({ extended: true }));
 // Auth Middleware
 app.use('/', async (req, res, next) => {
     const token = req.cookies[USER_COOKIE_KEY];
+    
     if (token) {
         let userTO = jwt.verifyToken(token);
         if (userTO) {
             res.cookie('isLogin',1);
             req.nickname = userTO.nickname;
+            res.cookie('userSeq',userTO.seq);
         }else{
             res.cookie('isLogin',0);
+            res.cookie('userSeq',-1);
             res.cookie(USER_COOKIE_KEY, token, { maxAge: 0 });
         }
+    }else{
+        res.cookie('isLogin',0);
+        res.cookie('userSeq',-1);
     }    
     next();
 });
@@ -41,12 +47,13 @@ app.use('/', async (req, res, next) => {
 app.use('/user', require('./routes/user.js').router);
 app.use('/myPage',require('./routes/myPage.js').router);
 app.use('/comment', require('./routes/comment.js').router);
-
+app.use('/db', require('./routes/db.js').router);
 
 //ROUTES
 app.get('/', async (req, res) => {
     // 메인페이지
     // isLogin - 0 : 로그인x, 1 : 로그인o
-    res.render('index', { isLogin : req.cookies['isLogin'], nickname : req.nickname });
+    res.cookie('character','');
+    res.render('index', { isLogin : req.cookies['isLogin'], nickname : req.nickname});
 });
 

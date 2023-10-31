@@ -15,7 +15,7 @@ class FavoriteDAO{
             connectionLimit: 5
         });
     }
-    static async selectFavorite(userTO){
+    static async selectFavoriteAll(userSeq){
         let rows;
         try{
             this.initializePool();
@@ -27,7 +27,7 @@ class FavoriteDAO{
                 FROM favorite 
                 WHERE user_seq = ? 
                 order by char_name`,
-                [userTO.seq]
+                [userSeq]
             );
             return rows;
         }
@@ -38,7 +38,30 @@ class FavoriteDAO{
         }
         return [];
     }
-    static async insertFavorite(userTO,charName,commNum,commentContent){
+    static async selectFavoriteByCharacter(userSeq,character){
+        let rows;
+        try{
+            this.initializePool();
+            FavoriteDAO.#conn = await FavoriteDAO.#pool.getConnection();
+            FavoriteDAO.#conn.query('USE tekkencommandwebdb');
+            
+            rows = await FavoriteDAO.#conn.query(
+                `SELECT comm_num 
+                FROM favorite 
+                WHERE user_seq = ? and char_name = ? 
+                order by comm_num`,
+                [userSeq,character]
+            );
+            return rows;
+        }
+        catch(err){}
+        finally{
+            if(FavoriteDAO.#conn) FavoriteDAO.#conn.release();
+            
+        }
+        return [];
+    }
+    static async insertFavorite(userSeq,charName,commNum){
         let flag = 2;
         try{
             this.initializePool();
@@ -48,13 +71,35 @@ class FavoriteDAO{
                 `INSERT into favorite 
                 VALUE(0,?,?,?);
                 `,
-                [userTO.seq,charName,commNum]
+                [userSeq,charName,commNum]
             );
             if(res.affectedRows===1){
-                // 댓글 달기 성공
                 flag = 1;
             }else{
-                //console.log("000 댓글달기 실패");
+                flag = 0;
+            }
+        }
+        catch(err){}
+        finally{
+            if(FavoriteDAO.#conn) FavoriteDAO.#conn.release();
+        }
+        return flag;
+    }
+    static async deleteFavorite(userSeq,charName,commNum){
+        let flag = 2;
+        try{
+            this.initializePool();
+            FavoriteDAO.#conn = await FavoriteDAO.#pool.getConnection();
+            FavoriteDAO.#conn.query('USE tekkencommandwebdb');
+            const res = await FavoriteDAO.#conn.query(
+                `Delete from favorite 
+                Where user_seq = ? and char_name = ? and comm_num = ?;
+                `,
+                [userSeq,charName,commNum]
+            );
+            if(res.affectedRows===1){
+                flag = 1;
+            }else{
                 flag = 0;
             }
         }

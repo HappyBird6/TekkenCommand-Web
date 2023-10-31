@@ -59,10 +59,10 @@ function formatCommand(searchValue){
         //console.log("formmated : " + formattedCommand);
         return formmatedCommand;
 }
-function displayCommands(searchValue = '') {
+async function displayCommands(searchValue = '') {
     const commandList = document.querySelector('.commandList');
     commandList.innerHTML = '';
-
+    let favoriteList = await getFavoriteList();
     const flexContainer = document.createElement('div');
     flexContainer.classList.add('flexContainer');
     if (searchValue.startsWith(".")) {
@@ -73,8 +73,8 @@ function displayCommands(searchValue = '') {
             if (searchValue && !command.command.includes(formattedCommand)) {
                 continue;
             }
-
-            flexContainer.appendChild(createCommandTable(command));
+            isFavorite = favoriteList.includes(command.number);
+            flexContainer.appendChild(await createCommandTable(command,isFavorite));
         }
     } else {
         // 이름으로 검색
@@ -86,16 +86,19 @@ function displayCommands(searchValue = '') {
             if (searchValue && !skillName.includes(searchValue.toLowerCase().split(' ').join(''))) {
                 continue;
             }
-
-            flexContainer.appendChild(createCommandTable(command));
+            
+            isFavorite = favoriteList.includes(command.number);
+            flexContainer.appendChild(await createCommandTable(command,isFavorite));
         }
     }
     commandList.appendChild(flexContainer);
 }
 
-function createCommandTable(command) {
+async function createCommandTable(command,isFavorite) {
     const command_table = document.createElement('table');
     command_table.classList.add('command_table');
+    let favoriteHTML = getFavoriteHTML(command.number,isFavorite);
+    
     command_table.innerHTML = `
     <table>
         <tr>
@@ -103,8 +106,7 @@ function createCommandTable(command) {
             <td colspan="2" class="command_name">${command.name_en}</td>
             <td colspan="2" class="favorite_check_star_td">
                 <div class="favorite_check_box">
-                    <img src="./assets/img/star/star-line.png" onclick="setFavorite(${command.number},${true})">
-                    <img src="./assets/img/star/star-fill.png" onclick="setFavorite(${command.number},${false}">
+                    ${favoriteHTML}
                 </div>
             </td>  
         </tr>

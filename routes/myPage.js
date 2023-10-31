@@ -14,7 +14,7 @@ router.get('/',async (req,res)=>{
     let userFavoriteData;
     if (token) {
         let userTO = jwt.verifyToken(token);
-        userFavoriteData = await FavoriteDAO.selectFavorite(userTO);
+        userFavoriteData = await FavoriteDAO.selectFavoriteAll(req.cookies['userSeq']);
         console.log(userFavoriteData);
     }else{
         userFavoriteData = "값 없음";

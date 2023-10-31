@@ -55,10 +55,19 @@ function loadPage(nowPage, commNum) {
             skip--;
             continue;
         }
+        let up, down;
         if (cnt===pageSize) break;
+        
+        if (getCookie('isLogin')==1){
+            up = `<a href="javascript:;" onclick="clickUp(true,${comment.seq},${commNum})">UP</a> : ${comment.up}`;
+            down = `<a href="javascript:;" onclick="clickUp(false,${comment.seq},${commNum})">DOWN</a> : ${comment.down}`;
+        }else{
+            up = `UP : ${comment.up}`;
+            down = `DOWN : ${comment.down}`;
+        }
         html += `<div class="comment">`;
-        html += `${comment.seq}/${comment.user_nickname} / ${comment.comment} /  ${comment.wdate} / 
-        <a href="javascript:;" onclick="clickUp(true,${comment.seq},${commNum})">UP</a> : ${comment.up} / <a href="javascript:;" onclick="clickUp(false,${comment.seq},${commNum})">DOWN</a> : ${comment.down}`;
+        html += `${comment.seq}/${comment.user_nickname} / ${comment.comment} /  ${comment.wdate} /`;
+        html += up + '/' + down;
         html += `</div>`;
         cnt++;
     }
@@ -100,12 +109,12 @@ function clearComment(commNum){
     comment.value = "";
 }
 
-async function clickUp(up,comm_seq,commNum){
+async function clickUp(up,commSeq,commNum){
     let commentOutputFrame = document.getElementById(`commentOutput_${getCookie("character")}_${commNum}`);
     const xhr = new XMLHttpRequest();
     xhr.open('POST', `comment/vote`, true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    const recommendationInfo = `${up}_${comm_seq}`;
+    const recommendationInfo = `${up}_${commSeq}`;
     xhr.onreadystatechange = async function() {
         if (xhr.readyState === 4 && xhr.status === 200) {
             const response = xhr.responseText;
