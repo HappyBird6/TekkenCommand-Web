@@ -1,6 +1,6 @@
 function displayCharacters(searchValue = '') {
-    const characterList = document.querySelector('.characterList');
-    characterList.innerHTML = '';
+    const characterContainer = document.getElementById('character-container');
+    characterContainer.innerHTML = '';
 
     const flexContainer = document.createElement('div');
     flexContainer.classList.add('flexContainer');
@@ -23,7 +23,7 @@ function displayCharacters(searchValue = '') {
 
         flexContainer.appendChild(characterBox);
     }
-    characterList.appendChild(flexContainer);
+    characterContainer.appendChild(flexContainer);
 }
 function handleSearch(event) {
     if (event.key === 'Enter') {

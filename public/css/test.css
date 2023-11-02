@@ -1,0 +1,201 @@
+#app {
+    position: relative;
+    overflow: hidden;
+    background-image: url('../assets/img/background/tekken-background.jpg');
+    background-repeat:no-repeat;
+    background-size: cover;
+}
+html{
+    height: 100%;
+}
+body {
+    margin: auto;
+}
+#app::before{
+    height: 100%;
+    content: "";
+    opacity: 0.5;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    background-color: #ffffff;
+    
+}
+
+#top-header {
+    background-color: rgba(83,33,33,0);
+    position: relative;
+}
+#top-header-row1 {
+    display: flex;
+    align-items: flex-end;
+    height: 65px;
+}
+#top-header-logo{
+    height: 100%;
+}
+#top-header-logo img{
+    height: 100%;
+}
+#top-header-name{
+    color:white;
+    font-size: 30px;
+    text-shadow :1px 4px 2px rgb(0, 0, 0);
+}
+#top-header-login{
+    margin-left: auto;
+}
+#top-nav{
+    background-color: rgba(83,33,33,0.9);
+    box-shadow: 0 5px 3px 0 rgba(0,0,0,.2);
+    z-index: 100;
+    position: relative;
+    height: 35px;
+}
+#top-nav #main-navigation {
+    display: flex;
+    width: 100%;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+#top-nav #main-navigation li {
+    flex: 1;
+    display: block;
+    position: relative;
+}
+#top-nav #main-navigation li a {
+    color:white;
+    display: block;
+    text-align: center;
+    border: 1px solid transparent;
+    text-decoration: none;
+    padding: 0.5rem;
+    font-size: .9375rem;
+    border: 1px solid transparent;
+    border-bottom: 0 none;
+    border-top: 0 none;
+    font-weight: 700;
+}
+#white1 {
+    height: 10px;
+
+}
+#contents {
+    display: flex;
+    height : calc(100vh - 220px);
+}
+
+#bottom-left {
+    height: 100%;
+    min-width: 150px;
+    width: 150px;
+    background-color: rgba(83,33,33,0.8);
+    position: relative;
+    overflow: hidden;
+}
+
+#character-search {
+    height: 50px;
+    display: flex;
+}
+#character-search input {
+    width : 100%;
+}
+
+#bottom-mid  {
+    height: 100%;
+    width: calc(100vw - 300px);
+    
+    background-color: rgba(83,33,33,0.8);
+    overflow: hidden;
+    position: relative;
+}
+#command-search-container {
+    display: flex;
+}
+#command-search {
+    height: 50px;
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+}
+#command-search input {
+    height: 70%;
+}
+#command-search-tooltip{
+    font-size: 12px;
+}
+#command-condition{
+    width: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#character-container{
+    height: calc(100% - 50px);
+    overflow-y: scroll;
+    -ms-overflow-style: none; /* 인터넷 익스플로러 */
+    scrollbar-width: none; /* 파이어폭스 */
+}
+#character-container::-webkit-scrollbar{
+    display: none;
+}
+.flexContainer{
+    width: 100%;
+}
+.characterBox {
+    border : rgb(0, 0, 0) solid 1px;
+    margin : 5px;
+}
+#command-container {
+    height: 600px;
+    overflow-y: scroll;
+}
+#command-container::-webkit-scrollbar{
+    width: 10px;
+}
+#command-container::-webkit-scrollbar-thumb{
+    height : 10%;
+    background : red;
+
+    border-radius: 10px;
+}
+#command-container::-webkit-scrollbar-track{
+    background :transparent;
+}
+.command_table td {
+    border : 1px black solid;
+}
+
+.command_table{
+    border-collapse: collapse;
+    margin-block: 5px;
+    width : 100%;
+}
+.command_num{
+    width :10%;
+}
+.command_name{
+    width :70%;
+}
+.command{
+    width :50%
+}
+
+.favorite_check_star_td{
+    text-align: right;
+}
+
+#bottom-right {
+    min-width: 150px;
+    width: 150px;
+    position: relative;
+    background-color: rgba(83,33,33,0.8);
+    border-left : 1px solid black;
+}
+#footer{
+    height : 100px;
+}

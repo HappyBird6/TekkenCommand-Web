@@ -60,8 +60,8 @@ function formatCommand(searchValue){
         return formmatedCommand;
 }
 async function displayCommands(searchValue = '') {
-    const commandList = document.querySelector('.commandList');
-    commandList.innerHTML = '';
+    const commandContainer = document.getElementById('command-container');
+    commandContainer.innerHTML = '';
     let favoriteList = await getFavoriteList();
     const flexContainer = document.createElement('div');
     flexContainer.classList.add('flexContainer');
@@ -91,7 +91,7 @@ async function displayCommands(searchValue = '') {
             flexContainer.appendChild(await createCommandTable(command,isFavorite));
         }
     }
-    commandList.appendChild(flexContainer);
+    commandContainer.appendChild(flexContainer);
 }
 
 async function createCommandTable(command,isFavorite) {

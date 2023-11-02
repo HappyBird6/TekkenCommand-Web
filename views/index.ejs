@@ -5,10 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TekkenCommand</title>
-    <link rel="stylesheet" href="../css/styles.css">
-    <link rel="stylesheet" href="../css/character_box.css">
-    <link rel="stylesheet" href="../css/color.css">
-    <link rel="stylesheet" href="../css/command_table.css">
+    <link rel="stylesheet" href="../css/test.css">
+
     <script src="../js/sc_character.js"></script>
     <script src="../js/sc_command.js"></script>
     <script src="../js/sc_comment.js"></script>
@@ -16,57 +14,67 @@
     <script src="../js/sc_favorite.js"></script>
     <script src="../js/sc_cookie.js"></script>
     <script>
-        window.onload = function(){
+        window.onload = function () {
             fetchCharacterData();
         }
     </script>
+    <style type="text/css">
 
+    </style>
 </head>
 
 <body>
-    <div class="topFrame">
-        <div class="info">
-            <p>Tekken7 Command Dictionary</p>
-            <p>Version : Tekken 7 v5.01</p>
-        </div>
-        <div class="help">
-            <p>도움말</p>
-            <div id="commandIMG"></div>
-        </div>
-        <div id="userInfo">
-            <%
-            if(isLogin==1){%>
-                <p style="font-size:12px"> nickname : <%=nickname%><p>
-                <button id="logoutBtn" onclick="location.href='/user/logout/redirect'">로그아웃</button>
-                <button id="myPageBtn" onclick="location.href='/myPage'">마이페이지</button>
-            <%}else{%>
-                <button id="loginBtn" onclick="location.href='/user/login'">로그인하러 가기</button>
-            <%}
-            %>
-        </div>
-    </div>
-    <div class="bottomFrame">
-        <div class="bottomLeftFrame">
-            <div class="characterSearch">
-                <input type="text" id="characterInput" placeholder="캐릭터 검색" oninput="displayCharacters(this.value)"
-                    onkeydown="handleSearch(event)">
-            </div>
-            <div class="characterList"></div>
-        </div>
-        <div class="commandFrame">
-            <div class="searchBox">
-                <div class="commandSearch">
-                    <input type="text" id="searchInput" placeholder="Searching Command Name" oninput="displayCommands(this.value)">
-                    <div id="searchToolTip">( Starting with . ->Search Command ex) . 236 . lplprprp )</div>
-                </div>
-                <div class="commandCondition">
-                    commandCondition
+    <div id="app">
+        <header id="top-header" class="header">
+            <div id="top-header-row1" class="container">
+                <a id="top-header-logo" href="http://localhost:3000"><img src="../assets/img/logo/tekken8logo.png"></a>
+                <div id="top-header-name">ARCHIVE</div>
+                <div id="top-header-login">
+                    <% if(isLogin==1){%>
+                        <p style="font-size:12px"> nickname : <%=nickname%></p>
+                        <button id="logoutBtn" onclick="location.href='/user/logout/redirect'">로그아웃</button>
+                        <button id="myPageBtn" onclick="location.href='/myPage'">마이페이지</button>
+                    <%}else{%>
+                        <button id="loginBtn" onclick="location.href='/user/login'">로그인하러 가기</button>
+                    <%} %>
                 </div>
             </div>
-            <div class="commandList"></div>
+            <nav id="top-nav" class="nav">
+                <ul id="main-navigation">
+                    <li><a href='http://localhost:3000'>command</a></li>
+                    <li><a href='http://localhost:3000'>favorite</a></li>
+                    <li><a href='http://localhost:3000'>preset</a></li>
+                    <li><a href='http://localhost:3000'>etc1</a></li>
+                    <li><a href='http://localhost:3000'>etc2</a></li>
+                </ul>
+            </nav>
+        </header>
+        <div id="white1"></div>
+        <div id="contents">
+            <div id="bottom-left">
+                <div id="character-search">
+                    <input type="text" placeholder="캐릭터 검색" oninput="displayCharacters(this.value)"
+                        onkeydown="handleSearch(event)">
+                </div>
+                <div id="character-container"></div>
+            </div>
+            <div id="bottom-mid">
+                <div id="command-search-container">
+                    <div id="command-search">
+                        <input type="text" placeholder="Searching Command Name" oninput="displayCommands(this.value)">
+                        <div id="command-search-tooltip">( Starting with . ->Search Command ex) . 236 . lplprprp )</div>
+                    </div>
+                    <div id="command-condition">
+                        commandCondition
+                    </div>
+                </div>
+                <div id="command-container"></div>
+            </div>
+            <div id="bottom-right">기타</div>
         </div>
-        <div class="advertisement">
-            <p>기타</p>
+        <div id="white1"></div>
+        <div id="footer">
+            푸터
         </div>
     </div>
 </body>
