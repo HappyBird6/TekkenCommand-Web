@@ -1,0 +1,111 @@
+:modal {
+    /*:modal은 모달 상태의 대화상자 박스에 대한 선택자이다. 비모달 대화상자는 dialog 태그 선택자로 정의가 가능하다. */
+    border: 3px solid black;
+    padding: 0px;
+    width: 400px;
+    height: 300px;
+}
+
+:modal form {
+    /* 모달 안에 있는 서식 컨테이너를 grid로 만들겁니다. 3개의 행을 가지며, 각 행은, header, body, bottom 영역으로 나뉩니다.*/
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+}
+
+:modal #dialog-login-header {
+    height: 50px;
+}
+
+:modal #dialog-login-header>div:first-child {
+    height: 48px;
+    display: flex;
+    justify-content: space-between;
+}
+
+:modal #dialog-login-header .title {
+    font-size: 30px;
+    padding: 5px;
+}
+
+:modal #dialog-login-header .white {
+    height: 2px;
+    background-color: black;
+}
+
+:modal #btn-dialog-close {
+    appearance: none;
+    border: none;
+    background-color: transparent;
+    font-weight: bold;
+    font-size: 20px;
+    padding: 5px;
+}
+
+:modal #dialog-nav {
+    background-color: rgba(83, 33, 33, 0.9);
+    z-index: 100;
+    position: relative;
+    height: 35px;
+}
+
+:modal #dialog-nav #dialog-navigation {
+    display: flex;
+    width: 100%;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+:modal #dialog-nav #dialog-navigation li {
+    flex: 1;
+    display: block;
+    position: relative;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    padding: 7.5px;
+    font-size: 15px;
+    border: 1px solid transparent;
+    border-bottom: 0 none;
+    border-top: 0 none;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+:modal #dialog-login-contents {
+    padding: 5px;
+    height: 155px;
+}
+
+:modal #dialog-login-contents div:first-child label {
+    font-size: 25px;
+    display: flex;
+    height: 40px;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+:modal #dialog-login-contents div:first-child input {
+    width: 200px;
+    height: 30px;
+}
+:modal .passwordcheck{
+    margin-left: 40px;
+    display: none;
+}
+:modal #dialog-login-footer {
+    display: flex;
+    height: 50px;
+    align-items: center;
+    justify-content: center;
+}
+
+:modal #dialog-login-footer #btn-login,
+#btn-signup {
+    width: calc(100% - 10px);
+    height: 40px;
+    padding: 5px;
+    font-size: 20px;
+}
+

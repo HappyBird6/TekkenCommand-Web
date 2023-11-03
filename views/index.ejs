@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TekkenCommand</title>
     <link rel="stylesheet" href="../css/test.css">
+    <link rel="stylesheet" href="../css/dialog-login.css">
 
     <script src="../js/sc_character.js"></script>
     <script src="../js/sc_command.js"></script>
@@ -13,29 +14,30 @@
     <script src="../js/sc_fetching.js"></script>
     <script src="../js/sc_favorite.js"></script>
     <script src="../js/sc_cookie.js"></script>
+    <script src="../js/sc_loginDialog.js"></script>
     <script>
         window.onload = function () {
+            
             fetchCharacterData();
+            setLoginDialog();
         }
     </script>
-    <style type="text/css">
-
-    </style>
 </head>
 
 <body>
     <div id="app">
-        <header id="top-header" class="header">
+        <header id="top-header">
             <div id="top-header-row1" class="container">
                 <a id="top-header-logo" href="http://localhost:3000"><img src="../assets/img/logo/tekken8logo.png"></a>
                 <div id="top-header-name">ARCHIVE</div>
                 <div id="top-header-login">
                     <% if(isLogin==1){%>
-                        <p style="font-size:12px"> nickname : <%=nickname%></p>
+                        <p style="font-size:12px"> nickname : <%=nickname%>
+                        </p>
                         <button id="logoutBtn" onclick="location.href='/user/logout/redirect'">로그아웃</button>
                         <button id="myPageBtn" onclick="location.href='/myPage'">마이페이지</button>
                     <%}else{%>
-                        <button id="loginBtn" onclick="location.href='/user/login'">로그인하러 가기</button>
+                        <button id="btn-dialog-login">로그인하러 가기</button>
                     <%} %>
                 </div>
             </div>
@@ -77,6 +79,40 @@
             푸터
         </div>
     </div>
+    <dialog id="dialog-login">
+        <form method="post" action="/user/login/redirect" name="frmLogin">
+            <div id="dialog-login-header">
+                <div>
+                    <strong class="title">User Login</strong>
+                    <div>
+                        <button type="button" id="btn-dialog-close" value="cancel">❌</button>
+                    </div>
+                </div>
+            </div>
+            <nav id="dialog-nav" class="nav">
+                <ul id="dialog-navigation">
+                    <li name="login">LOGIN</li>
+                    <li name="signup">SIGNUP</li>
+                </ul>
+            </nav>
+            <div id="dialog-login-contents">
+                <div>
+                    <label for="id" class="login signup">ID:<input type="text" id="id"
+                            name="id" /></label>
+                    <label for="password" class="login signup">PW:<input type="password"
+                            id="password" name="password" /></label>
+                    <label for="passwordCheck" class="signup">PWCHECK:<div class="passwordcheck" name="fail">❗</div><div class="passwordcheck" name="pass">✔</div><input type="password"
+                            id="passwordCheck" name="passwordCheck" /></label>
+                    <label for="nickname" class="signup">NICKNAME:<input type="text" id="nickname"
+                            name="nickname" /></label>
+                </div>
+            </div>
+            <div id="dialog-login-footer">
+                <button id="btn-login" class="login">LOG IN</button>
+                <button id="btn-signup" class="signup">SIGN UP</button>
+            </div>
+        </form>
+    </dialog>
 </body>
 
 </html>

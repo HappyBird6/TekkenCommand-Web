@@ -125,6 +125,7 @@ router.post('/signup/redirect', async (req, res) => {
     if(userTO){
         const token = jwt.generateToken(userTO);
         res.cookie(USER_COOKIE_KEY, token);
+        res.cookie('isLogin',1);
     }else{
         res.status(400).send('아이디 생성 실패');
     }
