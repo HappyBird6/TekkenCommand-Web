@@ -18,29 +18,68 @@ const GOOGLE_TOKEN_URL = 'https://oauth2.googleapis.com/token';
 const GOOGLE_USERINFO_URL = 'https://www.googleapis.com/oauth2/v2/userinfo';
 
 router.get('/login', async (req, res) => {
-    res.redirect('/html/login.html');
-});
-router.post('/login/redirect', async (req, res) => {
-    const { id, password } = req.body;
+    const { id, password } = req.query;
     let userTO = await UserDAO.fetchUserbyId(id);
+    console.log(id+" "+password);
     if (!userTO.nickname) {
         // db에 아이디 없음
-        res.status(400).send(`등록안된 사용자`);
+        res.json({flag:1});
         return;
     }
 
     const chkPassword = await enc.decrypt(password, userTO.password);
     if (!chkPassword) {
         // 패스워드 오류
-        res.status(400).send("패스워드 오류");
+        res.json({flag:2});
         return;
     }
     // 로그인 성공, jwt 토큰 생성
     const token = jwt.generateToken(userTO);
+    
     res.cookie(USER_COOKIE_KEY, token);
     res.cookie('isLogin',1);
+    res.json({flag:0});
+    
+})
+router.get('/signup', async (req, res) => {
+    const { id, password, nickname } = req.query;
+    
+
+    let userTO = await UserDAO.fetchUserbyId(id);
+    if (userTO.nickname!=='') {
+        // 아이디 중복 처리
+        res.json({flag:1});
+        return;
+    }
+
+    userTO = await UserDAO.fetchUserbyNickname(nickname);
+    if (userTO.id!=='') {
+        // 닉네임 중복 처리
+        res.json({flag:2});
+        return;
+    }
+
+    
+    userTO.id = id;
+    userTO.nickname = nickname;
+    userTO.password = password;
+    userTO = await UserDAO.createUser(userTO);
+    if(userTO){
+        const token = jwt.generateToken(userTO);
+        res.cookie(USER_COOKIE_KEY, token);
+        res.cookie('isLogin',1);
+        res.json({flag:0});
+    }else{
+        res.json({flag:3});
+    }
+})
+
+router.get('/logout', async (req, res) => {
+    res.clearCookie(USER_COOKIE_KEY);
+    res.cookie('isLogin',0);
     res.redirect('/');
 })
+
 
 // 구글 로그인
 router.get('/login_google', async (req, res) => {
@@ -105,37 +144,7 @@ router.get(GOOGLE_LOGIN_REDIRECT_PATH, async (req, res) => {
     }
 
 })
-router.get('/signup', async (req, res) => {
-    res.redirect('/html/signup.html');
-})
 
-router.post('/signup/redirect', async (req, res) => {
-    const { nickname, id, password } = req.body;
-    //console.log(id);
-    let userTO = await UserDAO.fetchUserbyId(id);
 
-    if (userTO.nickname!=='') {
-        // 아이디 중복 처리
-        res.status(400).send(`duplicate id : ${id}`);
-        return;
-    }
-    userTO.nickname = nickname;
-    userTO.password = password;
-    userTO = await UserDAO.createUser(userTO);
-    if(userTO){
-        const token = jwt.generateToken(userTO);
-        res.cookie(USER_COOKIE_KEY, token);
-        res.cookie('isLogin',1);
-    }else{
-        res.status(400).send('아이디 생성 실패');
-    }
-    res.redirect('/');
-})
-
-router.get('/logout/redirect', async (req, res) => {
-    res.clearCookie(USER_COOKIE_KEY);
-    res.cookie('isLogin',0);
-    res.redirect('/');
-})
 
 module.exports = { router };

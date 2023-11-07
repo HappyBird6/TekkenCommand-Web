@@ -90,10 +90,7 @@
     width: 200px;
     height: 30px;
 }
-:modal .passwordcheck{
-    margin-left: 40px;
-    display: none;
-}
+
 :modal #dialog-login-footer {
     display: flex;
     height: 50px;
@@ -107,5 +104,9 @@
     height: 40px;
     padding: 5px;
     font-size: 20px;
+}
+
+:modal .label{
+    width: 150px;
 }
 

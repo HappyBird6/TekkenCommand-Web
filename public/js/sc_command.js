@@ -31,16 +31,16 @@ function formatCommand(searchValue){
                             formattedCommand += "4 ";
                             break;
                         case "ap":
-                            formmatedCommand += "12 ";
+                            formattedCommand += "12 ";
                             break;
                         case "ak":
-                            formmatedCommand += "34 ";
+                            formattedCommand += "34 ";
                             break;
                         case "al":
-                            formmatedCommand += "13 ";
+                            formattedCommand += "13 ";
                             break;
                         case "ar":
-                            formmatedCommand += "24 ";
+                            formattedCommand += "24 ";
                             break;
                         case "ab":
                             formattedCommand += "1234 ";
@@ -57,11 +57,13 @@ function formatCommand(searchValue){
         }
         formattedCommand = formattedCommand.trimEnd();
         //console.log("formmated : " + formattedCommand);
-        return formmatedCommand;
+        return formattedCommand;
 }
 async function displayCommands(searchValue = '') {
     const commandContainer = document.getElementById('command-container');
     commandContainer.innerHTML = '';
+
+    // 즐겨 찾기 받아옴
     let favoriteList = await getFavoriteList();
     const flexContainer = document.createElement('div');
     flexContainer.classList.add('flexContainer');

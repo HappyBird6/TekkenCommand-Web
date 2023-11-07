@@ -17,7 +17,6 @@
     <script src="../js/sc_loginDialog.js"></script>
     <script>
         window.onload = function () {
-            
             fetchCharacterData();
             setLoginDialog();
         }
@@ -34,8 +33,8 @@
                     <% if(isLogin==1){%>
                         <p style="font-size:12px"> nickname : <%=nickname%>
                         </p>
-                        <button id="logoutBtn" onclick="location.href='/user/logout/redirect'">로그아웃</button>
-                        <button id="myPageBtn" onclick="location.href='/myPage'">마이페이지</button>
+                        <button id="logoutBtn" onclick="location.href='/user/logout'">로그아웃</button>
+                        <button onclick="location.href='/myPage'">마이페이지</button>
                     <%}else{%>
                         <button id="btn-dialog-login">로그인하러 가기</button>
                     <%} %>
@@ -80,7 +79,7 @@
         </div>
     </div>
     <dialog id="dialog-login">
-        <form method="post" action="/user/login/redirect" name="frmLogin">
+        <form method="dialog" name="frmLogin">
             <div id="dialog-login-header">
                 <div>
                     <strong class="title">User Login</strong>
@@ -97,14 +96,33 @@
             </nav>
             <div id="dialog-login-contents">
                 <div>
-                    <label for="id" class="login signup">ID:<input type="text" id="id"
-                            name="id" /></label>
-                    <label for="password" class="login signup">PW:<input type="password"
-                            id="password" name="password" /></label>
-                    <label for="passwordCheck" class="signup">PWCHECK:<div class="passwordcheck" name="fail">❗</div><div class="passwordcheck" name="pass">✔</div><input type="password"
-                            id="passwordCheck" name="passwordCheck" /></label>
-                    <label for="nickname" class="signup">NICKNAME:<input type="text" id="nickname"
-                            name="nickname" /></label>
+                    <label for="id" class="login signup">
+                        <div class="label">ID:</div>
+                        <div class="verifyContraints" name="id-fail" style="display: none;">❗</div>
+                        <div class="verifyContraints" name="id-pass" style="display: none;">✔</div>
+                        <input type="text" id="id" name="id" logintype="login" oninput="verifyIdContraints()"/>
+                    </label>
+
+                    <label for="password" class="login signup">
+                        <div class="label">PW:</div>
+                        <div class="verifyContraints" name="pw-fail" style="display: none;">❗</div>
+                        <div class="verifyContraints" name="pw-pass" style="display: none;">✔</div>
+                        <input type="password" id="password" name="password" logintype="login" oninput="comparePassword();verifyPasswordContraints();" />
+                    </label>
+
+                    <label for="passwordCheck" class="signup">
+                        <div class="label">PWCHECK:</div>
+                        <div class="verifyContraints" name="pwc-fail" style="display: none;">❗</div>
+                        <div class="verifyContraints" name="pwc-pass" style="display: none;">✔</div>
+                        <input type="password" id="passwordCheck" name="passwordCheck" oninput="comparePassword()" />
+                    </label>
+
+                    <label for="nickname" class="signup">
+                        <div class="label">NICKNAME:</div>
+                        <div class="verifyContraints" name="nck-fail" style="display: none;">❗</div>
+                        <div class="verifyContraints" name="nck-pass" style="display: none;">✔</div>
+                        <input type="text" id="nickname" name="nickname" oninput="verifyNicknameContraints()"/>
+                    </label>
                 </div>
             </div>
             <div id="dialog-login-footer">
