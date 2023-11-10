@@ -45,15 +45,17 @@ app.use('/', async (req, res, next) => {
 });
 
 app.use('/user', require('./routes/user.js').router);
-app.use('/myPage',require('./routes/myPage.js').router);
+app.use('/favorite',require('./routes/favorite.js').router);
 app.use('/comment', require('./routes/comment.js').router);
 app.use('/db', require('./routes/db.js').router);
-
 //ROUTES
-app.get('/', async (req, res) => {
+app.get('/',async (req,res)=>{
     // 메인페이지
     // isLogin - 0 : 로그인x, 1 : 로그인o
-    res.cookie('character','');
-    res.render('index', { isLogin : req.cookies['isLogin'], nickname : req.nickname});
+    if(!req.cookies['page']){
+        res.cookie('page',0);
+    }
+    res.cookie('character',0);
+    res.render('index', {isLogin : req.cookies['isLogin'], nickname : req.nickname});
 });
 

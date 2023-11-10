@@ -15,10 +15,12 @@
     <script src="../js/sc_favorite.js"></script>
     <script src="../js/sc_cookie.js"></script>
     <script src="../js/sc_loginDialog.js"></script>
+    <script src="../js/sc_paging.js"></script>
     <script>
         window.onload = function () {
             fetchCharacterData();
             setLoginDialog();
+            console.log(1);
         }
     </script>
 </head>
@@ -42,11 +44,11 @@
             </div>
             <nav id="top-nav" class="nav">
                 <ul id="main-navigation">
-                    <li><a href='http://localhost:3000'>command</a></li>
-                    <li><a href='http://localhost:3000'>favorite</a></li>
-                    <li><a href='http://localhost:3000'>preset</a></li>
-                    <li><a href='http://localhost:3000'>etc1</a></li>
-                    <li><a href='http://localhost:3000'>etc2</a></li>
+                    <li><a href="javascript:;" onclick="setPage(0)">command</a></li>
+                    <li><a href="javascript:;" onclick="setPage(1)">favorite</a></li>
+                    <li><a href="javascript:;">preset</a></li>
+                    <li><a href="javascript:;">etc1</a></li>
+                    <li><a href="javascript:;">etc2</a></li>
                 </ul>
             </nav>
         </header>
@@ -71,7 +73,7 @@
                 </div>
                 <div id="command-container"></div>
             </div>
-            <div id="bottom-right">기타</div>
+            <div id="bottom-right"></div>
         </div>
         <div id="white1"></div>
         <div id="footer">

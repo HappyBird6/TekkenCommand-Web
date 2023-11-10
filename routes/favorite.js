@@ -19,7 +19,9 @@ router.get('/',async (req,res)=>{
     }else{
         userFavoriteData = "값 없음";
     }
-    res.render('myPage',{userFavoriteData : userFavoriteData});
+    res.cookie('character','');
+    res.cookie('page',1);
+    res.render('index',{userFavoriteData : userFavoriteData, isLogin : req.cookies['isLogin'], nickname : req.nickname});
 });
 
 module.exports = { router };

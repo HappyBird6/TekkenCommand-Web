@@ -5,8 +5,6 @@ const FavoriteDAO = require('../scripts/DAO/FavoirteDAO.js');
 const express = require('express');
 const router = express.Router();
 
-
-
 router.get('/favorite/:CRUD/:userSeq/:character/:commNum',async (req,res)=>{
     let {
         CRUD,
@@ -18,7 +16,11 @@ router.get('/favorite/:CRUD/:userSeq/:character/:commNum',async (req,res)=>{
     switch(CRUD){
         case 'select':
             console.log('db.js : select favorite');
-            rows = await FavoriteDAO.selectFavoriteByCharacter(userSeq,character);
+            if(character==0){
+                rows = await FavoriteDAO.selectFavoriteAll(req.cookies['userSeq']);
+            }else{
+                rows = await FavoriteDAO.selectFavoriteByCharacter(userSeq,character);
+            }
             const outputArray = rows.map(item => item.comm_num);
             res.json(outputArray);
             return;

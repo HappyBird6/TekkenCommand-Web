@@ -16,11 +16,14 @@ db에 입력하기 위해서는 데이터 마무리가 필요함.
     -> 아주세나 먼저 작업 완료 하고
         테이블꾸미기 ㄱㄱ
 
-★★로그인 제약★★
+favorite, preset 작업전 데이터 작업먼저
+네비게이션 클릭시 sc_paging에서 페이지 작업후
+데이터 끌어오는 식으로 
+
 
 
 쿠키
 1. token -> userTO(jwt)
 2. isLogin
 3. character
-4. nowPage
+4. page - {0:command, 1:favorite, 2:preset}

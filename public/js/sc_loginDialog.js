@@ -91,11 +91,9 @@ const setLoginDialog = function(){
                     console.log("비번 오류");
                     break;
                 case 0:
-                    console.log("정상");
                     window.location.href = "/";
                     break;
                 default:
-                    console.log("?");
                     break;
             }
         } catch (error) {
@@ -110,7 +108,6 @@ const setLoginDialog = function(){
         if(!verifyNicknameContraints()) return;
         
         if(!comparePassword()){
-            console.log("비번 확인 다름");
             return;
         }
         
@@ -120,7 +117,6 @@ const setLoginDialog = function(){
                 throw new Error('서버 응답이 실패했습니다.');
             }
             const flag = await response.json();
-            console.log(flag.flag);
             switch (flag.flag){
                 case 1:
                     console.log("아이디 중복");
@@ -129,11 +125,9 @@ const setLoginDialog = function(){
                     console.log("닉네임 중복");
                     break;
                 case 0:
-                    console.log("정상");
                     window.location.href = "/";
                     break;
                 default:
-                    console.log("?");
                     break;
             }
         } catch (error) {
@@ -216,7 +210,6 @@ const verifyIdContraints = function(){
     }
     idFail.style.display="none";
     idPass.style.display="";
-    console.log("정상 아이디 패턴");
     return true;
 }
 const verifyPasswordContraints = function(){
@@ -251,10 +244,8 @@ const verifyPasswordContraints = function(){
         }
         if(!isNaN(val[i])){
             haveNum = true;
-            console.log("have Num");
         }else{
             haveChar = true;
-            console.log("have Char");
         }
     }
     if(haveNum && haveChar){
@@ -268,7 +259,6 @@ const verifyPasswordContraints = function(){
     }
     pwFail.style.display="none";
     pwPass.style.display="";
-    console.log("정상 비밀번호 패턴");
     return true
 }
 const verifyNicknameContraints = function(){
@@ -293,6 +283,5 @@ const verifyNicknameContraints = function(){
     }
     nckFail.style.display="none";
     nckPass.style.display="";
-    console.log("정상 아이디 패턴");
     return true;
 }

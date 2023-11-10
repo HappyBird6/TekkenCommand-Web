@@ -5,6 +5,9 @@
     background-repeat:no-repeat;
     background-size: cover;
 }
+.disabled{
+    display : none;
+}
 html{
     height: 100%;
 }

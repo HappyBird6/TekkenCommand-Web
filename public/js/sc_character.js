@@ -4,7 +4,7 @@ function displayCharacters(searchValue = '') {
 
     const flexContainer = document.createElement('div');
     flexContainer.classList.add('flexContainer');
-    console.log(characterData);
+
     for (const name in characterData.name) {
         const nameTmp = name.toLowerCase();
         if (searchValue && !nameTmp.toLowerCase().startsWith(searchValue)) {
