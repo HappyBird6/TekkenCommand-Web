@@ -62,9 +62,6 @@ function formatCommand(searchValue){
 async function displayCommands(searchValue = '') {
     const commandContainer = document.getElementById('command-container');
     commandContainer.innerHTML = '';
-
-    // 즐겨 찾기 받아옴
-    let favoriteList = await getFavoriteList();
     const flexContainer = document.createElement('div');
     flexContainer.classList.add('flexContainer');
     if (searchValue.startsWith(".")) {
@@ -75,7 +72,17 @@ async function displayCommands(searchValue = '') {
             if (searchValue && !command.command.includes(formattedCommand)) {
                 continue;
             }
+            
             isFavorite = favoriteList.includes(command.number);
+            switch(getCookie('page')){
+                case '1':
+                    if(!isFavorite) continue;
+                    break;
+                case '2':
+                    break;
+                default:
+                    break;
+            }
             flexContainer.appendChild(await createCommandTable(command,isFavorite));
         }
     } else {
@@ -88,8 +95,16 @@ async function displayCommands(searchValue = '') {
             if (searchValue && !skillName.includes(searchValue.toLowerCase().split(' ').join(''))) {
                 continue;
             }
-            
             isFavorite = favoriteList.includes(command.number);
+            switch(getCookie('page')){
+                case '1':
+                    if(!isFavorite) continue;
+                    break;
+                case '2':
+                    break;
+                default:
+                    break;
+            }
             flexContainer.appendChild(await createCommandTable(command,isFavorite));
         }
     }

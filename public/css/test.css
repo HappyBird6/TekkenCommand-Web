@@ -148,6 +148,7 @@ body {
 }
 .flexContainer{
     width: 100%;
+    padding:0.1px;
 }
 .characterBox {
     border : rgb(0, 0, 0) solid 1px;

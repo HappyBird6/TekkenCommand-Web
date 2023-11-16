@@ -15,13 +15,14 @@ router.get('/favorite/:CRUD/:userSeq/:character/:commNum',async (req,res)=>{
     let rows;
     switch(CRUD){
         case 'select':
-            console.log('db.js : select favorite');
+            let outputArray;
             if(character==0){
-                rows = await FavoriteDAO.selectFavoriteAll(req.cookies['userSeq']);
+                //rows = await FavoriteDAO.selectFavoriteAll(req.cookies['userSeq']);
+                //outputArray = formatData(rows);
             }else{
                 rows = await FavoriteDAO.selectFavoriteByCharacter(userSeq,character);
+                outputArray = rows.map(item => item.comm_num);
             }
-            const outputArray = rows.map(item => item.comm_num);
             res.json(outputArray);
             return;
         case 'insert':
@@ -39,4 +40,5 @@ router.get('/favorite/:CRUD/:userSeq/:character/:commNum',async (req,res)=>{
             break;
     }
 });
+
 module.exports = { router };

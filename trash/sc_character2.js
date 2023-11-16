@@ -4,19 +4,8 @@ function displayCharacters(searchValue = '') {
 
     const flexContainer = document.createElement('div');
     flexContainer.classList.add('flexContainer');
-    let targetData;
-    switch(getCookie('page')){
-        case '1':
-            targetData = favoriteCharacterList;
-            break;
-        case '2':
-            break;
-        default:
-            targetData = characterData;
-            break;
-    }
-    for(let i=0;i<targetData.length;i++){
-        const name = targetData[i];
+
+    for (const name in characterData.name) {
         const nameTmp = name.toLowerCase();
         if (searchValue && !nameTmp.toLowerCase().startsWith(searchValue)) {
             continue;
@@ -29,8 +18,6 @@ function displayCharacters(searchValue = '') {
 
         characterBox.appendChild(info);
         characterBox.addEventListener('click', function () {
-            
-            favoriteList = favoriteData.get(name);
             fetchCommandData(name);
         });
 

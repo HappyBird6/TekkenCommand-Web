@@ -19,5 +19,13 @@ const verifyToken = function(token){
 
     return UserTO.fromJSON(decoded.userTO_JSON);
 }
-
-module.exports = {EXP_TIME, generateToken, verifyToken};
+const verifyLoginState = function(key){
+    if(key){
+        let userTO = verifyToken(key);
+        if(userTO) return userTO;
+        else return null;
+    }else{
+        return null;
+    }
+}
+module.exports = {EXP_TIME, generateToken, verifyToken, verifyLoginState};
