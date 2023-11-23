@@ -13,12 +13,12 @@ router.get('/',async (req,res)=>{
     if(jwt.verifyLoginState(req.cookies[USER_COOKIE_KEY])==null){
         data = [0];
     }else{
-        let favoriteData = await FavoriteDAO.selectFavoriteAll(req.cookies['userSeq']);
+        //let presetData = await FavoriteDAO.selectFavoriteAll(req.cookies['userSeq']);
         //console.log(favoriteData);
-        data = [1,favoriteData];
+        data = [1,[]];
     }
     res.cookie('character','0');
-    res.cookie('page',1);
+    res.cookie('page',2);
     res.json(data);
 });
 

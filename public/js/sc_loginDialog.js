@@ -135,7 +135,7 @@ const setLoginDialog = function(){
         }
     });
     inputPassword.addEventListener('oninput',function(){
-        comparePassword();
+        //comparePassword();
     })
     inputPasswordCheck.addEventListener('oninput',function(){
         

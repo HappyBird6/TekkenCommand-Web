@@ -72,8 +72,8 @@ async function displayCommands(searchValue = '') {
             if (searchValue && !command.command.includes(formattedCommand)) {
                 continue;
             }
-            
-            isFavorite = favoriteList.includes(command.number);
+            if(!favoriteCommandListByCharacter) isFavorite = (1===0);
+            else isFavorite = favoriteCommandListByCharacter.has(command.number);
             switch(getCookie('page')){
                 case '1':
                     if(!isFavorite) continue;
@@ -95,7 +95,8 @@ async function displayCommands(searchValue = '') {
             if (searchValue && !skillName.includes(searchValue.toLowerCase().split(' ').join(''))) {
                 continue;
             }
-            isFavorite = favoriteList.includes(command.number);
+            if(!favoriteCommandListByCharacter) isFavorite = (1===0);
+            else isFavorite = favoriteCommandListByCharacter.has(command.number);
             switch(getCookie('page')){
                 case '1':
                     if(!isFavorite) continue;

@@ -2,8 +2,12 @@ let commandData; // 전체 커맨드 목록과 데이터
 
 let favoriteData;
 let favoriteCharacterList; // favorite Page에 출력될 캐릭터 리스트
-let favoriteList;
+let favoriteCommandListByCharacter;
 
+let highlightedBox;
+const initParam = function(){
+    
+}
 const characterData=
     [
     "Alisa",

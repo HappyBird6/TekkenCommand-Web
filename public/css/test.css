@@ -24,7 +24,6 @@ body {
     right: 0px;
     bottom: 0px;
     background-color: #ffffff;
-    
 }
 
 #top-header {
@@ -95,7 +94,7 @@ body {
     height: 100%;
     min-width: 150px;
     width: 150px;
-    background-color: rgba(83,33,33,0.8);
+    /* background-color: rgba(83,33,33,0.8); */
     position: relative;
     overflow: hidden;
 }
@@ -112,12 +111,13 @@ body {
     height: 100%;
     width: calc(100vw - 300px);
     
-    background-color: rgba(83,33,33,0.8);
+    /* background-color: rgba(83,33,33,0.8); */
     overflow: hidden;
     position: relative;
 }
 #command-search-container {
     display: flex;
+    height : 50px;
 }
 #command-search {
     height: 50px;
@@ -153,10 +153,15 @@ body {
 .characterBox {
     border : rgb(0, 0, 0) solid 1px;
     margin : 5px;
+    background-image : url('../assets/img/character/thumbnail/temp-character-thumbnail.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position-x: right;
 }
 #command-container {
-    height: 600px;
+    height: calc(100% - 50px);
     overflow-y: scroll;
+    overflow-x: hidden;
 }
 #command-container::-webkit-scrollbar{
     width: 10px;
@@ -197,9 +202,10 @@ body {
     min-width: 150px;
     width: 150px;
     position: relative;
-    background-color: rgba(83,33,33,0.8);
+    /* background-color: rgba(83,33,33,0.8); */
     border-left : 1px solid black;
 }
 #footer{
     height : 100px;
+    background-color: rgba(83,33,33,0.8);
 }

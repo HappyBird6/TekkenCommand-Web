@@ -45,12 +45,15 @@ app.use('/', async (req, res, next) => {
     next();
 });
 
+//ROUTES
 app.use('/user', require('./routes/user.js').router);
 app.use('/favorite',require('./routes/favorite.js').router);
+app.use('/preset',require('./routes/preset.js').router);
 app.use('/command',require('./routes/command.js').router);
 app.use('/comment', require('./routes/comment.js').router);
 app.use('/db', require('./routes/db.js').router);
-//ROUTES
+app.use('/commandAPI', require('./routes/commandAPI.js').router);
+
 app.get('/',async (req,res)=>{
     // 메인페이지
     // isLogin - 0 : 로그인x, 1 : 로그인o

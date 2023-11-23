@@ -19,7 +19,7 @@
     <script src="../js/controller.js"></script>
     <script>
         window.onload = function () {
-            fetchCommandPage();
+            setPage(0);
             setLoginDialog();
         }
     </script>
@@ -29,14 +29,14 @@
     <div id="app">
         <header id="top-header">
             <div id="top-header-row1" class="container">
-                <a id="top-header-logo" href="http://localhost:3000"><img src="../assets/img/logo/tekken8logo.png"></a>
+                <a id="top-header-logo" href="javascript:;"><img src="../assets/img/logo/tekken8logo.png"></a>
                 <div id="top-header-name">ARCHIVE</div>
                 <div id="top-header-login">
                     <% if(isLogin==1){%>
                         <p style="font-size:12px"> nickname : <%=nickname%>
                         </p>
                         <button id="logoutBtn" onclick="location.href='/user/logout'">로그아웃</button>
-                        <button onclick="location.href='/myPage'">마이페이지</button>
+                        
                     <%}else{%>
                         <button id="btn-dialog-login">로그인하러 가기</button>
                     <%} %>
@@ -73,6 +73,7 @@
                 </div>
                 <div id="command-container"></div>
             </div>
+            <div id="bottom-blank-space2"></div>
             <div id="bottom-right"></div>
         </div>
         <div id="white1"></div>

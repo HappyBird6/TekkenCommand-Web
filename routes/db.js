@@ -26,12 +26,10 @@ router.get('/favorite/:CRUD/:userSeq/:character/:commNum',async (req,res)=>{
             res.json(outputArray);
             return;
         case 'insert':
-            console.log('db.js : insert favorite');
             rows = await FavoriteDAO.insertFavorite(userSeq,character,commNum);
             res.json('favorite : insert success');
             break;
         case 'delete':
-            console.log('db.js : delete favorite');
             rows = await FavoriteDAO.deleteFavorite(userSeq,character,commNum);
             res.json('favorite : delete success');
             break;
