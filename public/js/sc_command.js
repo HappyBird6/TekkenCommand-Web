@@ -64,6 +64,8 @@ async function displayCommands(searchValue = '') {
     commandContainer.innerHTML = '';
     const flexContainer = document.createElement('div');
     flexContainer.classList.add('flexContainer');
+    let isFavorite;
+    let isPreset;
     if (searchValue.startsWith(".")) {
         let formattedCommand = formatCommand(searchValue);
         //커맨드로 검색
@@ -72,13 +74,18 @@ async function displayCommands(searchValue = '') {
             if (searchValue && !command.command.includes(formattedCommand)) {
                 continue;
             }
+            
             if(!favoriteCommandListByCharacter) isFavorite = (1===0);
             else isFavorite = favoriteCommandListByCharacter.has(command.number);
+            
+            if(!presetCommandListByCharacter) isPreset = (1===0);
+            else isPreset = presetCommandListByCharacter.has(command.number);
             switch(getCookie('page')){
                 case '1':
                     if(!isFavorite) continue;
                     break;
                 case '2':
+                    if(!isPreset) continue;
                     break;
                 default:
                     break;
@@ -95,13 +102,17 @@ async function displayCommands(searchValue = '') {
             if (searchValue && !skillName.includes(searchValue.toLowerCase().split(' ').join(''))) {
                 continue;
             }
+
             if(!favoriteCommandListByCharacter) isFavorite = (1===0);
             else isFavorite = favoriteCommandListByCharacter.has(command.number);
+            if(!presetCommandListByCharacter) isPreset = (1===0);
+            else isPreset = presetCommandListByCharacter.has(command.number);
             switch(getCookie('page')){
                 case '1':
                     if(!isFavorite) continue;
                     break;
                 case '2':
+                    if(!isPreset) continue;
                     break;
                 default:
                     break;
@@ -115,16 +126,25 @@ async function displayCommands(searchValue = '') {
 async function createCommandTable(command,isFavorite) {
     const command_table = document.createElement('table');
     command_table.classList.add('command_table');
-    let favoriteHTML = getFavoriteHTML(command.number,isFavorite);
-    
+    let favoriteHTML = "";
+    let presetHTML = "";
+    if(getCookie('page')=='0' || getCookie('page')=='1'){
+         favoriteHTML = getFavoriteHTML(command.number,isFavorite);
+    }
+    presetHTML = getPresetButtonHTML(command.number);
     command_table.innerHTML = `
     <table>
         <tr>
           <td class="command_num">${command.number}</td>
             <td colspan="2" class="command_name">${command.name_en}</td>
-            <td colspan="2" class="favorite_check_star_td">
+            <td colspan="2" class="check_box_td">
+                <div>
+                    <div class="preset_check_box">
+                    ${presetHTML}
+                </div>
                 <div class="favorite_check_box">
                     ${favoriteHTML}
+                </div>
                 </div>
             </td>  
         </tr>

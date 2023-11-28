@@ -10,6 +10,7 @@ function displayCharacters(searchValue = '') {
             targetData = favoriteCharacterList;
             break;
         case '2':
+            targetData = presetList;
             break;
         default:
             targetData = characterData;
@@ -29,8 +30,25 @@ function displayCharacters(searchValue = '') {
 
         characterBox.appendChild(info);
         characterBox.addEventListener('click', function () {
-            if(favoriteData) favoriteCommandListByCharacter = favoriteData.get(name);
-            fetchCommandData(name);
+            switch(getCookie('page')){
+                case '1':
+                    if(favoriteData) favoriteCommandListByCharacter = favoriteData.get(name);
+                    break;
+                case '2':
+                    if(presetData) {
+                        presetCommandListByCharacter = presetData.get(presetCharacterList[i]).get(name);
+                    }
+                    break;
+                default:
+                    if(favoriteData) favoriteCommandListByCharacter = favoriteData.get(name);
+                    break;
+            }
+            if(getCookie('page')==='2'){
+                // 프리셋일경우
+                fetchCommandData(presetCharacterList[i].toLowerCase());
+            }else{  
+                fetchCommandData(name);
+            }
 
             highlightBox(this);
         });

@@ -11,9 +11,27 @@
 
 
 
+getPresetButtonHTML에 onclick 시 간단한 dialog 나오고 프리셋 설정
+2. preset 만드는 기능(신규, 기존)
+3. preset 삭제 기능(통째로, 낱개)
+4. preset 불러오는 기능 url 이용
+
+5. 데이터 작업 마무리(이젠 진짜)
+
+6. 데이터 작업에 따른 기술별 특징 검색 기능
+
+7. 디자인
 
 쿠키
 1. token -> userTO(jwt)
 2. isLogin
 3. character
 4. page - {0:command, 1:favorite, 2:preset}
+
+
+DB
+-- preset
+preset_mapper에서 user_seq로 preset_seq를 불러옴
+prest에서 preset_seq에 매칭되는 char_name, comm_num_info를 불러옴
+char_name : 캐릭터명
+comm_num_info : 프리셋에 저장된 커맨드 정보 "숫자,숫자,숫자,"형태

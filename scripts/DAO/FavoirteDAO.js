@@ -16,7 +16,7 @@ class FavoriteDAO{
         });
     }
     static async selectFavoriteAll(userSeq){
-        let rows;
+        let rows =[];
         try{
             this.initializePool();
             FavoriteDAO.#conn = await FavoriteDAO.#pool.getConnection();
@@ -29,17 +29,17 @@ class FavoriteDAO{
                 order by char_name`,
                 [userSeq]
             );
-            return rows;
+            
         }
         catch(err){}
         finally{
             if(FavoriteDAO.#conn) FavoriteDAO.#conn.release();
             
         }
-        return [];
+        return rows;
     }
     static async selectFavoriteByCharacter(userSeq,character){
-        let rows;
+        let rows=[];
         try{
             this.initializePool();
             FavoriteDAO.#conn = await FavoriteDAO.#pool.getConnection();
@@ -52,14 +52,13 @@ class FavoriteDAO{
                 order by comm_num`,
                 [userSeq,character]
             );
-            return rows;
         }
         catch(err){}
         finally{
             if(FavoriteDAO.#conn) FavoriteDAO.#conn.release();
             
         }
-        return [];
+        return rows;
     }
     static async insertFavorite(userSeq,charName,commNum){
         let flag = 2;

@@ -4,6 +4,11 @@ let favoriteData;
 let favoriteCharacterList; // favorite Page에 출력될 캐릭터 리스트
 let favoriteCommandListByCharacter;
 
+let presetData;
+let presetCharacterList;
+let presetList;
+let presetCommandListByCharacter;
+
 let highlightedBox;
 const initParam = function(){
     
