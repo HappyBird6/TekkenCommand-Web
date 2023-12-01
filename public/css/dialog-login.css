@@ -42,7 +42,7 @@
 }
 
 :modal #dialog-nav {
-    background-color: rgba(83, 33, 33, 0.9);
+    background-color: rgba(245, 10, 100);
     z-index: 100;
     position: relative;
     height: 35px;

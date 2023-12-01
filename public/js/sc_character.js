@@ -52,7 +52,13 @@ function displayCharacters(searchValue = '') {
 
             highlightBox(this);
         });
-        setCharacterImage(this);
+        characterBox.addEventListener('mouseover',function(){
+            CBoxMouseIn(characterBox);
+        });
+        characterBox.addEventListener('mouseout',function(){
+            CBoxMouseOut(characterBox);
+        });
+        setCharacterImage(characterBox,nameTmp);
         flexContainer.appendChild(characterBox);
     }
     characterContainer.appendChild(flexContainer);
@@ -70,10 +76,39 @@ function searchCharacter() {
 }
 
 function highlightBox(box){
-    if(highlightedBox) highlightedBox.style.boxShadow = "0px 0px 5px 0px rgba(0,0,0,0)";
-    box.style.boxShadow = "0px 0px 5px 0px rgba(255,0,0,.8)";
+    if(highlightedBox) {
+        // 기존 박스 원상복귀
+        highlightedBox.style.boxShadow = "0px 0px 5px 0px rgba(0,0,0,0)";
+        highlightedBox.style.backgroundColor="rgba(245, 10, 100, 0.3)";
+        highlightedBox.style.border="3px solid rgba(245,10,100)";
+        highlightedBox.setAttribute("highlighted","false");
+        var p = highlightedBox.querySelector('p');
+        p.style.background = "linear-gradient(to right, rgba(245, 10, 100), rgba(255, 0, 0, 0))"
+    }
+    // 새로운 박스 하이라이트
+    box.style.boxShadow = "0px 0px 25px 0px #1c5660";
+    box.style.backgroundColor="rgba(31, 100, 112, 0.3)";
+    box.style.border="3px solid rgba(31,100,112)";
+    box.setAttribute("highlighted","true");
+    // 기존 박스로 업데이트
     highlightedBox = box;
 }
-function setCharacterImage(box){
-    //box.style.backgroundImage = "url('../assets/img/character/thumbnail/temp-character-thumbnail.jpg')";
+function setCharacterImage(box,name){
+    box.style.backgroundImage = "url('../assets/img/character/thumbnail/"+name+".webp')";
+
+}
+function CBoxMouseIn(box){
+    var p = box.querySelector('p');
+    p.style.background = "linear-gradient(to right, rgba(31, 100, 112), rgba(255, 0, 0, 0))"
+    p.style.backgroundSize = "70% 120%";
+    p.style.backgroundRepeat = "no-repeat";
+
+}  
+function CBoxMouseOut(box){
+    var p = box.querySelector('p');
+    if(box.getAttribute("highlighted")!=="true"){
+        p.style.background = "linear-gradient(to right, rgba(245, 10, 100), rgba(255, 0, 0, 0))"
+        p.style.backgroundSize = "70% 120%";
+        p.style.backgroundRepeat = "no-repeat";
+    }
 }
