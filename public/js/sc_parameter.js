@@ -10,6 +10,7 @@ let presetList;
 let presetCommandListByCharacter;
 
 let highlightedBox;
+let highlightedNav;
 const initParam = function(){
     
 }
@@ -17,14 +18,13 @@ const characterData=
     [
     "Alisa",
     "Asuka",
-    "Bob",
     "Bryan",
     "Claudio",
     "DevilJin",
     "Dragunov",
     "Feng",
     "Hwoarang",
-    "Jack-7",
+    "Jack-8",
     "Jin",
     "Kazuya",
     "King",

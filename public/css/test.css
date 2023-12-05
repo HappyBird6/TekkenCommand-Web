@@ -155,18 +155,20 @@ body {
     margin : 5px;
     background-image : url('../assets/img/character/thumbnail/temp-character-thumbnail.png');
     background-repeat: no-repeat;
-    background-position-x: right;
+    background-position-x: left;
     background-size: 32px 50px;
     background-color: rgba(245, 10, 100, 0.3);
     border: 3px solid rgba(245, 10, 100);
 }
 .characterBox p {
     padding-bottom: 3px;
-    background: linear-gradient(to right, rgba(245, 10, 100), rgba(255, 0, 0, 0));
-    background-size: 70% 120%;
+    background: linear-gradient(to left, rgba(245, 10, 100), rgba(255, 0, 0, 0));
+    background-size: 100% 120%;
     background-repeat: no-repeat;
     font-size : 20px;
-    padding-left: 5px;
+    padding-left: 3px;
+    margin-left:32px;
+    color: #ffffff;
 }
 #command-container {
     height: calc(100% - 50px);

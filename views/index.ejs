@@ -18,10 +18,12 @@
     <script src="../js/sc_loginDialog.js"></script>
     <script src="../js/controller.js"></script>
     <script src="../js/sc_html.js"></script>
+    <script src="../js/sc_nav.js"></script>
     <script>
         window.onload = function () {
             setPage(0);
             setLoginDialog();
+            setNavCss();
         }
     </script>
 </head>
@@ -45,9 +47,9 @@
             </div>
             <nav id="top-nav" class="nav">
                 <ul id="main-navigation">
-                    <li><a href="javascript:;" onclick="setPage(0)">command</a></li>
-                    <li><a href="javascript:;" onclick="setPage(1)">favorite</a></li>
-                    <li><a href="javascript:;" onclick="setPage(2)">preset</a></li>
+                    <li><a href="javascript:;" onclick="setPage(0);highlightNav(this);" class="text">COMMAND</a></li>
+                    <li><a href="javascript:;" onclick="setPage(1);highlightNav(this);" class="text">FAVORITE</a></li>
+                    <li><a href="javascript:;" onclick="setPage(2);highlightNav(this);" class="text">PRESET</a></li>
                     <li><a href="javascript:;">etc1</a></li>
                     <li><a href="javascript:;">etc2</a></li>
                 </ul>
